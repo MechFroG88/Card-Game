@@ -1,4 +1,8 @@
 {
-  "extends": "@tsconfig/node10/tsconfig.json"
+  "extends": "@tsconfig/node10/tsconfig.json",
+
+  "references": [
+    { "path": "../types" }
+  ]
 
 }
