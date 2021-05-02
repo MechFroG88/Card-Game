@@ -1,11 +1,13 @@
 import svelte from 'rollup-plugin-svelte';
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
-import sveltePreprocess from 'svelte-preprocess';
-import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
+import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import typescript from '@rollup/plugin-typescript';
+import alias from '@rollup/plugin-alias';
+import sveltePreprocess from 'svelte-preprocess';
+import path from 'path';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -46,6 +48,13 @@ export default {
 				dev: !production
 			}
 		}),
+    // Alias for src directory for shorter file paths for imports
+    alias({
+      resolve: ['.jsx', '.js', '.svelte'], // optional, by default this will just look for .js files or folders
+      entries: [
+        { find: '@', replacement: path.resolve(__dirname, 'src') },
+      ]
+    }),
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
 		css({ output: 'bundle.css' }),
