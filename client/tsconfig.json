@@ -6,8 +6,12 @@
 
   "compilerOptions": {
     "moduleResolution": "node",
-    "importsNotUsedAsValues": "error"
+    "importsNotUsedAsValues": "error",
+    "paths": {
+      "@Type/*": [ "../types" ],
+    },
   },
+  
 
   "references": [
     { "path": "../types" }

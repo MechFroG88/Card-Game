@@ -1,5 +1,11 @@
 <script lang="ts">
   import { io } from 'socket.io-client';
+  import { Player, Shop } from "@Type/";
+
+  let a = new Player("1");
+  let b = new Shop();
+  console.log(a)
+  console.log(b)
 
   const socket = io("localhost:3000");
   type Message = {

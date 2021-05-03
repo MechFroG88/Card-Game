@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 
-import { Player, Shop } from "../types";
+import { Player, Shop } from "@Type/";
 
 let a = new Player("a");
 a.hasID("b");

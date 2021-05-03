@@ -1,6 +1,14 @@
 {
   "extends": "@tsconfig/node10/tsconfig.json",
 
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "importsNotUsedAsValues": "error",
+    "paths": {
+      "@Type/*": [ "../types" ],
+    },
+  },
+
   "references": [
     { "path": "../types" }
   ]
