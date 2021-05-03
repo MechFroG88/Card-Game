@@ -1,11 +1,10 @@
-export class Player {
-  private id:string;
+import { Card } from "./Card";
+import { Role } from "./Role";
 
-  constructor(id:string) {
-    this.id = id;
-  };
-
-  public hasID(id:string) :boolean {
-    return this.id === id;
-  }
+export class Player extends Client {
+  private role : Role;
+  private hand : Card [];
+  private play : Card [];
+  private active : Card [];
+  private field : {any:any};
 }
