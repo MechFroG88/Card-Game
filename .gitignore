@@ -1,6 +1,6 @@
 **/node_modules/
 client/public/build/
-
+**/dist/
 .DS_Store
 *~
 .*.sw?

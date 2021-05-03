@@ -2,13 +2,10 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 
-import { Player, Shop } from "@Type/";
+import { Player } from "../types";
 
 let a = new Player("a");
 a.hasID("b");
-
-let b = new Shop();
-
 
 // Creating express app, and hosting it on a http server
 const app = express();

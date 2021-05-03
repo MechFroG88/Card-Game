@@ -26,9 +26,19 @@
         "signature": "097a57355ded99c68e6df1b738990448e0bf170e606707df5a7c0481ff2427cd",
         "affectsGlobalScope": true
       },
+      "./shop.ts": {
+        "version": "931467d996ad24f5133d70d9d4461852804ffb6cfa0c14622911dac6542d0631",
+        "signature": "bee3a67a451bd4373a450003078d45b727da897a22c73f91041d4c6766f6b85d",
+        "affectsGlobalScope": false
+      },
       "./player.ts": {
         "version": "fb7c6cb7372f404ba2208cf258f8820b35df54ce6368c025a4508ccde7ddb0bc",
         "signature": "700ed9668d7d59fb8223af69abf5ff9738fbcf261ea373022b22aee1688c7245",
+        "affectsGlobalScope": false
+      },
+      "./index.ts": {
+        "version": "041398f6110ccc7074f4810c488c6c293e3ed5541cf58356c8c1984792447df9",
+        "signature": "d8d00fbfb11550ef993e265f439afef135c2ee29187edffa5eec2d91dab6bc68",
         "affectsGlobalScope": false
       }
     },
@@ -39,15 +49,27 @@
       "composite": true,
       "configFilePath": "./tsconfig.json"
     },
-    "referencedMap": {},
-    "exportedModulesMap": {},
+    "referencedMap": {
+      "./index.ts": [
+        "./player.ts",
+        "./shop.ts"
+      ]
+    },
+    "exportedModulesMap": {
+      "./index.ts": [
+        "./player.ts",
+        "./shop.ts"
+      ]
+    },
     "semanticDiagnosticsPerFile": [
       "../../../../appdata/roaming/npm/node_modules/typescript/lib/lib.d.ts",
       "../../../../appdata/roaming/npm/node_modules/typescript/lib/lib.dom.d.ts",
       "../../../../appdata/roaming/npm/node_modules/typescript/lib/lib.es5.d.ts",
       "../../../../appdata/roaming/npm/node_modules/typescript/lib/lib.scripthost.d.ts",
       "../../../../appdata/roaming/npm/node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
-      "./player.ts"
+      "./index.ts",
+      "./player.ts",
+      "./shop.ts"
     ]
   },
   "version": "4.2.4"

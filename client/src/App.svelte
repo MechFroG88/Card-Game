@@ -1,12 +1,7 @@
 <script lang="ts">
   import { io } from 'socket.io-client';
-  import { Player, Shop } from "@Type/";
-
-  let a = new Player("1");
-  let b = new Shop();
-  console.log(a)
-  console.log(b)
-
+  import { Player, Shop } from "../../types/dist";
+  let a:Player = new Player("2");
   const socket = io("localhost:3000");
   type Message = {
     text:string;
