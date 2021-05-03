@@ -1,2 +1,1 @@
-export * from "./shop";
-export * from "./player";
+export * from "./Player";
