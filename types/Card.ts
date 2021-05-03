@@ -1,7 +1,10 @@
-import { Player } from "./player";
+import { Player } from "./Player";
 
-export interface Card {
-  user ?: Player;
-  target ?: Player[]; 
+export abstract class Card {
+  player : Player;
+  target : Player[]; 
+
+  isTargetable : boolean;
+
   play() : void;
 }
