@@ -10,14 +10,11 @@ import Tween = Phaser.Tweens.Tween;
 
 export class Card extends Phaser.GameObjects.Rectangle {
   // Default values for a card (might change to using sprites)
-  public static width  : number = 80;
-  public static height : number = 120;
+  private static width  : number = 100;
+  private static height : number = 150;
   private static color  : number = 0xff0000;
   private originalX : number;
   private originalY : number;
-
-  // Override the parent scene to be used in this class
-  public scene : Phaser.Scene;
 
   // Tween used to animate the card
   private tweenConfig : object;
@@ -54,19 +51,28 @@ export class Card extends Phaser.GameObjects.Rectangle {
     };
   }
 
-  public translate(dx : number, dy : number) : void {
-    this.scene.tweens.add({
-      ...this.tweenConfig,
-      x: this.x + dx,
-      y: this.y + dy
-    });
+  public moveCenter(x : number, y : number, conf ?: object) : void {
+    this.moveTo(x, y, conf);
+    this.originalX = x;
+    this.originalY = y;
   }
 
-  public translateFromOrigin(dx : number, dy : number) : void {
+  public moveTo(x : number, y : number, conf ?: object) : void {
+    this.animate({x, y, ...conf});
+  }
+
+  public translate(dx : number, dy : number, conf ?: object) : void {
+    this.moveTo(this.x + dx, this.y + dy, conf);
+  }
+
+  public translateFromOrigin(dx : number, dy : number, conf ?: object) : void {
+    this.moveTo(this.originalX + dx, this.originalY + dy, conf);
+  }
+
+  public animate(conf : object) : void {
     this.scene.tweens.add({
       ...this.tweenConfig,
-      x: this.originalX + dx,
-      y: this.originalY + dy
+      ...conf
     });
   }
 }
@@ -81,12 +87,19 @@ export class CardGroup {
   private count : number;
   private centerX : number;
   private centerY : number;
+  private options : CardGroupOptions;
   private cards : Card[];
 
   constructor(scene : Phaser.Scene, x : number, y : number, count : number, opt : CardGroupOptions) {
+    this.centerX = x;
+    this.centerY = y;
     this.count = count;
+    this.options = opt;
     this.cards = [];
-    for (let currX = x - (count - 1)/2 * opt.space, n = 0; n < count; currX += opt.space, n++) {
+
+    let currX = x - (count - 1)/2 * opt.space;
+
+    for (let n = 0; n < count; currX += opt.space, n++) {
       let current : Card = new Card(scene, currX, y);
 
       current.setStrokeStyle(3, 0);
@@ -95,7 +108,7 @@ export class CardGroup {
         current.setStrokeStyle(3, 0x10e0ff);
         current.setFillStyle(0xff5050);
         current.translateFromOrigin(0, -1 * opt.popup);
-        for (let i = n + 1; i < count; i++) {
+        for (let i = n + 1; i < this.count; i++) {
           let currentCardToMove : Card = this.cards[i];
           currentCardToMove.translateFromOrigin(opt.shift, 0);
         }
@@ -105,13 +118,45 @@ export class CardGroup {
         current.setStrokeStyle(3, 0);
         current.setFillStyle(0xff0000);
         current.translateFromOrigin(0, 0);
-        for (let i = n + 1; i < count; i++) {
+        for (let i = n + 1; i < this.count; i++) {
           let currentCardToMove : Card = this.cards[i];
           currentCardToMove.translateFromOrigin(0, 0);
         }
       });
 
+      current.on('pointerdown', () => {
+        this.removeCard(n);
+      });
+
       this.cards.push(current);
+    }
+  }
+
+  public removeCard(index : number) : void {
+    if (index < 0 || index >= this.count) {
+      // Invalid parameter
+      return;
+    }
+
+    this.count--;
+    let [removed] = this.cards.splice(index, 1);
+
+    removed.animate({
+      y: removed.y - 100,
+      alpha: 0,
+      duration: 500
+    });
+
+    let currX = this.centerX - (this.count - 1)/2 * this.options.space;
+
+    for (let n = 0; n < this.count; currX += this.options.space, n++) {
+      let current : Card = this.cards[n];
+      current.moveCenter(currX, this.centerY, { delay: 500, duration: 300 });
+
+      current.off('pointerdown');
+      current.on('pointerdown', () => {
+        this.removeCard(n);
+      });
     }
   }
 }

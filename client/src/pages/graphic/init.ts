@@ -1,8 +1,8 @@
 import 'phaser';
 import { Card, CardGroup } from './entities/Card';
 
-const HEIGHT : number = 600;
-const WIDTH  : number = 800;
+const HEIGHT : number = 800;
+const WIDTH  : number = 1000;
 
 export default class Demo extends Phaser.Scene {
   private card : Card;
@@ -13,8 +13,8 @@ export default class Demo extends Phaser.Scene {
 
   preload() {
     let cg : CardGroup = new CardGroup(this, WIDTH/2, HEIGHT - 150, 8, {
-      space: 30,
-      shift: 40,
+      space: 40,
+      shift: 55,
       popup: 30,
     });
   }
