@@ -1,6 +1,6 @@
 import { Player } from "./Player";
 
-export abstract class Card {
+export interface Card {
   player : Player;
   target : Player[]; 
 
