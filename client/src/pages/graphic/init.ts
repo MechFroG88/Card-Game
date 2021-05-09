@@ -1,4 +1,5 @@
 import 'phaser';
+import { Popup } from './entities/Popup';
 import { CardGroup } from './entities/CardGroup';
 
 const HEIGHT : number = 800;
@@ -15,6 +16,10 @@ export default class Demo extends Phaser.Scene {
       shift: 55,
       popup: 25,
     });
+
+    let shop : Shop = new Shop();
+    shop.registerToScenePlugin(this.scene);
+    shop.show();
   }
 
   create() {
@@ -24,19 +29,13 @@ export default class Demo extends Phaser.Scene {
   }
 }
 
-export class Shop extends Phaser.Scene {
+export class Shop extends Popup {
   constructor() {
     super('Shop');
   }
 
-  preload() {
-    this.add.text(100, 100, 'Yes');
-  }
-
   create() {
-  }
-
-  update() {
+    this.add.text(100, 100, 'Yes');
   }
 }
 
