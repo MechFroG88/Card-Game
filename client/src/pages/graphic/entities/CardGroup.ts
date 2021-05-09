@@ -1,19 +1,23 @@
 import { Card } from './Card';
 
-/* Phaser Inputs */
-import Input = Phaser.Input;
-import Pointer = Input.Pointer;
+/*** Start of type and namespace imports ***/
 
-/* Phaser Inputs Types */
 import InputTypes = Phaser.Types.Input;
-import InputEvent = InputTypes.EventData;
 
-import Tween = Phaser.Tweens.Tween;
+/*** End of type and namespace imports ***/
 
+// Custom type for the options for CardGroup
 type CardGroupOptions = {
+
+  // The amount of spacing between Cards initially
   space : number;
+
+  // The amount of shift of Cards in front of the Card you are hovering over
   shift : number;
+
+  // The amount of popup of the Card you are hovering over
   popup : number;
+
 };
 
 /**

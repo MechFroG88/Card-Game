@@ -1,3 +1,5 @@
+/*** Start of type and namespace imports ***/
+
 /* Phaser Inputs */
 import Input = Phaser.Input;
 import Pointer = Input.Pointer;
@@ -7,6 +9,8 @@ import InputTypes = Phaser.Types.Input;
 import InputEvent = InputTypes.EventData;
 
 import Tween = Phaser.Tweens.Tween;
+
+/*** End of type and namespace imports ***/
 
 /**
  * A Card class for the skeleton of a Card object.
