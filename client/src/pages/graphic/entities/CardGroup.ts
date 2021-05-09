@@ -1,11 +1,5 @@
 import { Card } from './Card';
 
-/*** Start of type and namespace imports ***/
-
-import InputTypes = Phaser.Types.Input;
-
-/*** End of type and namespace imports ***/
-
 // Custom type for the options for CardGroup
 type CardGroupOptions = {
 
@@ -24,9 +18,6 @@ type CardGroupOptions = {
  * A class that extends the Card base class for customizations of a Card in CardGroup.
  */
 class PlayCard extends Card {
-  constructor(scene : Phaser.Scene, x : number, y : number, config ?: InputTypes.InputConfiguration) {
-    super(scene, x, y, config);
-  }
 }
 
 /**
@@ -52,11 +43,11 @@ export class CardGroup {
   /**
    * Constructor for a CardGroup.
    *
-   * @param {Phaser.Scene} scene - The scene to render this CardGroup in.
-   * @param {number} x - The X-coordinates of CardGroup. (positioned at the center of the CardGroup)
-   * @param {number} y - The Y-coordinates of CardGroup. (positioned at the center of the CardGroup)
-   * @param {number} count - Number of cards in the CardGroup initially.
-   * @param {CardGroupOptions} opt - Options for the interaction of Cards in this CardGroup.
+   * @param {Phaser.Scene} scene The scene to render this CardGroup in.
+   * @param {number} x The X-coordinates of CardGroup. (positioned at the center of the CardGroup)
+   * @param {number} y The Y-coordinates of CardGroup. (positioned at the center of the CardGroup)
+   * @param {number} count Number of cards in the CardGroup initially.
+   * @param {CardGroupOptions} opt Options for the interaction of Cards in this CardGroup.
    */
   constructor(scene : Phaser.Scene, x : number, y : number, count : number, opt : CardGroupOptions) {
     // Initialize and presetting the fields
@@ -108,7 +99,7 @@ export class CardGroup {
   /**
    * Removes the Card at a certain index in the Card array.
    *
-   * @param {number} index - Index of the card to be removed. (must be a valid index)
+   * @param {number} index Index of the card to be removed. (must be a valid index)
    */
   public removeCard(index : number) : void {
     if (index < 0 || index >= this.count) {

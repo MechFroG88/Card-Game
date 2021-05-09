@@ -1,14 +1,6 @@
 /*** Start of type and namespace imports ***/
 
-/* Phaser Inputs */
-import Input = Phaser.Input;
-import Pointer = Input.Pointer;
-
-/* Phaser Inputs Types */
 import InputTypes = Phaser.Types.Input;
-import InputEvent = InputTypes.EventData;
-
-import Tween = Phaser.Tweens.Tween;
 
 /*** End of type and namespace imports ***/
 
@@ -21,7 +13,6 @@ export class Card extends Phaser.GameObjects.Rectangle {
   // Default values for a card (might change to using sprites)
   private static width  : number = 100;
   private static height : number = 150;
-  private static color  : number = 0xff0000;
 
   // X and Y coordinates of the Card
   private originalX : number;
@@ -45,9 +36,9 @@ export class Card extends Phaser.GameObjects.Rectangle {
   /**
    * Constructor for a Card object.
    *
-   * @param {Phaser.Scene} scene - Phaser scene object to add the Card to.
-   * @param {number} x - X-coordinate of the Card. (coordinates taken at the center of the Card)
-   * @param {number} y - Y-coordinate of the Card. (coordinates taken at the center of the Card)
+   * @param {Phaser.Scene} scene Phaser scene object to add the Card to.
+   * @param {number} x X-coordinate of the Card. (coordinates taken at the center of the Card)
+   * @param {number} y Y-coordinate of the Card. (coordinates taken at the center of the Card)
    * @param {InputTypes.InputConfiguration} [config] - Configuration for the Card's interactivity.
    */
   constructor(scene : Phaser.Scene, x : number, y : number, config ?: InputTypes.InputConfiguration) {
@@ -100,9 +91,9 @@ export class Card extends Phaser.GameObjects.Rectangle {
   /**
    * Moves the Card and its center to the absolute coordinates on the canvas.
    *
-   * @param {number} x - New X-coordinate of Card.
-   * @param {number} y - New Y-coordinate of Card.
-   * @param {object} [conf] - Configuration for animating the movement of the Card.
+   * @param {number} x New X-coordinate of Card.
+   * @param {number} y New Y-coordinate of Card.
+   * @param {object} [conf] Configuration for animating the movement of the Card.
    */
   public moveCenter(x : number, y : number, conf ?: object) : void {
     this.moveTo(x, y, conf);
@@ -113,9 +104,9 @@ export class Card extends Phaser.GameObjects.Rectangle {
   /**
    * Moves Card to the absolute coordinates on the canvas.
    *
-   * @param {number} x - New X-coordinate of Card.
-   * @param {number} y - New Y-coordinate of Card.
-   * @param {object} [conf] - Configuration for animating the movement of the Card.
+   * @param {number} x New X-coordinate of Card.
+   * @param {number} y New Y-coordinate of Card.
+   * @param {object} [conf] Configuration for animating the movement of the Card.
    */
   public moveTo(x : number, y : number, conf ?: object) : void {
     this.animate({x, y, ...conf});
@@ -124,9 +115,9 @@ export class Card extends Phaser.GameObjects.Rectangle {
   /**
    * Translates Card relative to current position.
    *
-   * @param {number} dx  - Distance in X direction.
-   * @param {number} dy  - Distance in Y direction.
-   * @param {object} [conf] - Configuration for animating the movement of the Card.
+   * @param {number} dx Distance in X direction.
+   * @param {number} dy Distance in Y direction.
+   * @param {object} [conf] Configuration for animating the movement of the Card.
    */
   public translate(dx : number, dy : number, conf ?: object) : void {
     this.moveTo(this.x + dx, this.y + dy, conf);
@@ -135,9 +126,9 @@ export class Card extends Phaser.GameObjects.Rectangle {
   /**
    * Translates Card relative to original center.
    *
-   * @param {number} dx  - Distance in X direction.
-   * @param {number} dy  - Distance in Y direction.
-   * @param {object} [conf] - Configuration for animating the movement of the Card.
+   * @param {number} dx Distance in X direction.
+   * @param {number} dy Distance in Y direction.
+   * @param {object} [conf] Configuration for animating the movement of the Card.
    */
   public translateFromOrigin(dx : number, dy : number, conf ?: object) : void {
     this.moveTo(this.originalX + dx, this.originalY + dy, conf);
@@ -146,7 +137,7 @@ export class Card extends Phaser.GameObjects.Rectangle {
   /**
    * Animate Card using the configuration passed in.
    *
-   * @param {object} conf - Configuration for the animation.
+   * @param {object} conf Configuration for the animation.
    */
   public animate(conf : object) : void {
     this.scene.tweens.add({

@@ -21,12 +21,6 @@ export default class Demo extends Phaser.Scene {
     shop.registerToScenePlugin(this.scene);
     shop.show();
   }
-
-  create() {
-  }
-
-  update() {
-  }
 }
 
 export class Shop extends Popup {

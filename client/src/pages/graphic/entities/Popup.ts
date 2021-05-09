@@ -18,7 +18,7 @@ export class Popup extends Phaser.Scene {
   /**
    * Create a new Popup window initialized with a config.
    *
-   * @param {string | SceneConfig} config - String that represented the key / name of the Popup Scene, or a SettingsConfig object defined under Phaser.Types.Scenes.
+   * @param {string | SceneConfig} config String that represented the key / name of the Popup Scene, or a SettingsConfig object defined under Phaser.Types.Scenes.
    */
   constructor(config : string | SceneConfig) {
     super(config);
@@ -35,7 +35,7 @@ export class Popup extends Phaser.Scene {
    * Add current scene to the scene specified by plugin with autostart disabled.
    * This method will auto unregister from the scene it is previously registered in.
    *
-   * @param {ScenePlugin} plugin - ScenePlugin to add current Popup to.
+   * @param {ScenePlugin} plugin ScenePlugin to add current Popup to.
    */
   public registerToScenePlugin(plugin : ScenePlugin) : void {
     this.unregisterFromPlugin();
