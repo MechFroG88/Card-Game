@@ -17,7 +17,7 @@ type CardGroupOptions = {
 /**
  * A class that extends the Card base class for customizations of a Card in CardGroup.
  */
-class PlayCard extends Card {
+export class PlayCard extends Card {
 }
 
 /**
@@ -27,6 +27,9 @@ class PlayCard extends Card {
  * The addCard() method is still yet to be implemented.
  */
 export class CardGroup {
+  // The Scene that this CardGroup is in.
+  private scene : Phaser.Scene;
+
   // Number of Cards currently in the CardGroup.
   private count : number;
 
@@ -38,7 +41,10 @@ export class CardGroup {
   private options : CardGroupOptions;
 
   // Array of Cards.
-  private cards : PlayCard[];
+  private cards : Card[];
+
+  // Default animation duration for Card repositioning
+  private animationDuration : number = 300;
 
   /**
    * Constructor for a CardGroup.
@@ -51,49 +57,28 @@ export class CardGroup {
    */
   constructor(scene : Phaser.Scene, x : number, y : number, count : number, opt : CardGroupOptions) {
     // Initialize and presetting the fields
+    this.scene = scene;
+
     this.centerX = x;
     this.centerY = y;
+
     this.count = count;
-    this.options = opt;
     this.cards = [];
 
-    // Leftmost X offset
+    this.options = opt;
+
+    // Current X coordinate is set to the leftmost X offset
     let currX = x - (count - 1)/2 * opt.space;
 
     for (let n = 0; n < count; currX += opt.space, n++) {
       // Create a new Card
-      let current : PlayCard = new PlayCard(scene, currX, y);
-
-      current.setDefaultStyle();
-
-      // Define the pointerover (hover) behaviour
-      current.on('pointerover', (pointer, x, y, event) => {
-        current.setHoverStyle();
-        current.translateFromOrigin(0, -1 * opt.popup);
-        for (let i = n + 1; i < this.count; i++) {
-          let currentCardToMove : Card = this.cards[i];
-          currentCardToMove.translateFromOrigin(opt.shift, 0);
-        }
-      });
-
-      // Define the pointerout (end hover) behaviour
-      current.on('pointerout', (pointer, x, y, event) => {
-        current.setDefaultStyle();
-        current.translateFromOrigin(0, 0);
-        for (let i = n + 1; i < this.count; i++) {
-          let currentCardToMove : Card = this.cards[i];
-          currentCardToMove.translateFromOrigin(0, 0);
-        }
-      });
-
-      // Define the pointerdown (click / tap) behaviour
-      current.on('pointerdown', () => {
-        this.removeCard(n);
-      });
+      let current : Card = new PlayCard(scene, currX, y);
 
       // Add current Card to the Card array
       this.cards.push(current);
     }
+
+    this.adjustCardPosition();
   }
 
   /**
@@ -113,23 +98,125 @@ export class CardGroup {
 
     // Animate the removed Card
     removed.animate({
-      y: removed.y - 100,
+      y: removed.y - 120,
       alpha: 0,
-      duration: 500
+      duration: this.animationDuration
     });
+
+    // Adjust Card positions after 500ms delay
+    this.adjustCardPosition(300);
+  }
+
+  /**
+   * Add a card to the specified index in the CardGroup.
+   *
+   * @param {number} index Index of the Card upon inserting.
+   * @param {Card} card The Card object to be added.
+   */
+  public addCard(index : number) : void {
+    if (index < 0 || index > this.count) {
+      // Invalid index or null card
+      return;
+    }
+
+    // Increment card count and insert an empty card at that index
+    this.count++;
+    this.cards.splice(index, 0, null);
+
+    // Move existing cards to their new position
+    this.adjustCardPosition();
+
+    // X coordinate of new Card
+    let x = this.centerX + (index - (this.count - 1) / 2) * this.options.space;
+
+    // Create a new Card at that index with the correct X coord but slightly higher in Y
+    this.cards[index] = new PlayCard(this.scene, x, this.centerY - 150);
+    
+    // Initialize the Card to transparent
+    this.cards[index].setAlpha(0);
+
+    // Adjust the center and depth of the new Card with this method call
+    this.adjustCardPosition(this.animationDuration);
+
+    // Fade the Card in
+    this.cards[index].animate({
+      alpha: 1,
+      delay: this.animationDuration,
+      duration: 200
+    });
+  }
+
+  /**
+   * Permute the Cards according to the permutation given.
+   *
+   * @param {number[]} perm Permutation array that describes how to permute the Cards.
+   */
+  public permuteCards(perm : number[]) : void {
+    if (perm.length != this.count) {
+      // Invalid perm
+      return;
+    }
+
+    this.cards = perm.map(newInd => this.cards[newInd]);
+
+    this.adjustCardPosition();
+  }
+
+  /**
+   * Adjust the position of Cards according to the contents of the cards field.
+   * This method also handles the updating of Card events, as well as other fields
+   * such as depth value.
+   *
+   * @param {number} [delay] Optional delay for animation.
+   */
+  private adjustCardPosition(delay ?: number) : void {
+    if (delay === null) delay = 0;
 
     // Leftmost X offset of the new CardGroup
     let currX = this.centerX - (this.count - 1)/2 * this.options.space;
 
-    for (let n = 0; n < this.count; currX += this.options.space, n++) {
-      let current : Card = this.cards[n];
+    for (let i = 0; i < this.count; currX += this.options.space, i++) {
+      let current : Card = this.cards[i];
+
+      // Skip empty cards
+      if (current === null) continue;
+
+
       // Move the card's center to the new position
-      current.moveCenter(currX, this.centerY, { delay: 500, duration: 300 });
+      current.moveCenter(currX, this.centerY, { delay, duration: this.animationDuration });
+
+      setTimeout(() => {
+        current.setDepth(i);
+        current.setDefaultStyle();
+      }, delay);
+
+      // Define the pointerover (hover) behaviour
+      current.off('pointerover');
+      current.on('pointerover', (pointer, x, y, event) => {
+        current.setHoverStyle();
+        current.translateFromOrigin(0, -1 * this.options.popup);
+        for (let j = i + 1; j < this.count; j++) {
+          let currentCardToMove : Card = this.cards[j];
+          currentCardToMove.translateFromOrigin(this.options.shift, 0);
+        }
+      });
+
+      // Define the pointerout (end hover) behaviour
+      current.off('pointerout');
+      current.on('pointerout', (pointer, x, y, event) => {
+        current.setDefaultStyle();
+        current.translateFromOrigin(0, 0);
+        for (let j = i + 1; j < this.count; j++) {
+          let currentCardToMove : Card = this.cards[j];
+          currentCardToMove.translateFromOrigin(0, 0);
+        }
+      });
+
 
       // Redefine new pointerdown event for the new indices
       current.off('pointerdown');
       current.on('pointerdown', () => {
-        this.removeCard(n);
+        this.removeCard(i);
       });
     }
   }

@@ -1,4 +1,4 @@
-import 'phaser';
+import * as Phaser from 'phaser';
 import { Popup } from './entities/Popup';
 import { CardGroup } from './entities/CardGroup';
 
@@ -17,9 +17,19 @@ export default class Demo extends Phaser.Scene {
       popup: 25,
     });
 
+    /*
     let shop : Shop = new Shop();
     shop.registerToScenePlugin(this.scene);
     shop.show();
+    */
+
+    this.input.keyboard.on('keydown-' + 'S', () => {
+      cg.permuteCards([7,1,6,3,0,5,2,4])
+    });
+
+    this.input.keyboard.on('keydown-' + 'A', () => {
+      cg.addCard(3);
+    });
   }
 }
 

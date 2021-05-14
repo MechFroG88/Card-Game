@@ -64,6 +64,8 @@ export class Card extends Phaser.GameObjects.Rectangle {
       ease: 'Sine.easeOut',
       targets: this.gameObj
     };
+
+    this.setDefaultStyle();
   }
 
   /**
