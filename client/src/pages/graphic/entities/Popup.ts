@@ -55,7 +55,7 @@ export class Popup extends Phaser.Scene {
   /**
    * Remove current Scene from the ScenePlugin previously registered to.
    */
-  public unregisterFromPlugin() {
+  public unregisterFromPlugin() : void {
     if (this.plugin !== null) {
       // Remove from plugin
       this.plugin.remove(this.key);
@@ -80,5 +80,46 @@ export class Popup extends Phaser.Scene {
     if (this.scene.isVisible()) {
       this.scene.sleep();
     }
+  }
+
+  /**
+   * Draws the overlay that will be under the popup box.
+   *
+   * @param {number} width Width of the overlay.
+   * @param {number} height Height of the overlay.
+   * @param {number} [fillColor] Color of the overlay. Default is black (#000000).
+   * @param {number} [fillAlpha] Alpha value between 0 and 1 that specifies the opacity of the overlay. Default value is 0.2 or 20%.
+   */
+  protected drawOverlay(width : number, height : number, fillColor ?: number, fillAlpha ?: number) : void { 
+    this.drawBox(0, 0, width, height, fillColor || 0, fillAlpha || 0.2).setOrigin(0, 0);
+  }
+
+  /**
+   * Draws the actual popup window box.
+   *
+   * @param {number} x X-coordinate of the center of the box.
+   * @param {number} y Y-coordinate of the center of the box.
+   * @param {number} width Width of the window.
+   * @param {number} height Height of the window.
+   * @param {number} [fillColor] Color of the window. Default is white (#FFFFFF).
+   * @param {number} [fillAlpha] Alpha value between 0 and 1 that specifies the opacity of the window. Default value is 1 or 100%.
+   */
+  protected drawWindow(x : number, y : number, width : number, height : number, fillColor ?: number, fillAlpha ?: number) : void {
+    this.drawBox(x, y, width, height, fillColor || 0xffffff, fillAlpha || 1);
+  }
+
+  /**
+   * Abstract a box drawing routine for this class.
+   *
+   * @param {number} x X-coordinate of the center of the box.
+   * @param {number} y Y-coordinate of the center of the box.
+   * @param {number} width Width of the box.
+   * @param {number} height Height of the box.
+   * @param {number} fillColor Color of the box.
+   * @param {number} fillAlpha Alpha value between 0 and 1 that specifies the opacity of the box.
+   * @return The Rectangle box created and drawn.
+   */
+  private drawBox(x : number, y : number, width : number, height : number, fillColor : number, fillAlpha : number) : Phaser.GameObjects.Rectangle {
+    return this.add.rectangle(x, y, width, height, fillColor, fillAlpha);
   }
 }

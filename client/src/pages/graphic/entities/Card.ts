@@ -74,7 +74,7 @@ export class Card extends Phaser.GameObjects.Rectangle {
    * Note: Use absolute stylings, relative stylings like setScale() might give
    * unexpected behaviours.
    */
-  public setDefaultStyle() {
+  public setDefaultStyle() : void {
     this.setStrokeStyle(3, 0);
     this.setFillStyle(0xff0000);
   }
@@ -85,7 +85,7 @@ export class Card extends Phaser.GameObjects.Rectangle {
    * Note: Use absolute stylings, relative stylings like setScale() might give
    * unexpected behaviours.
    */
-  public setHoverStyle() {
+  public setHoverStyle() : void {
     this.setStrokeStyle(3, 0x10e0ff);
     this.setFillStyle(0xff5050);
   }

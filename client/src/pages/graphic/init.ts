@@ -17,11 +17,9 @@ export default class Demo extends Phaser.Scene {
       popup: 25,
     });
 
-    /*
     let shop : Shop = new Shop();
     shop.registerToScenePlugin(this.scene);
     shop.show();
-    */
 
     this.input.keyboard.on('keydown-' + 'S', () => {
       cg.permuteCards([7,1,6,3,0,5,2,4])
@@ -38,8 +36,16 @@ export class Shop extends Popup {
     super('Shop');
   }
 
-  create() {
-    this.add.text(100, 100, 'Yes');
+  preload() {
+    this.drawOverlay(WIDTH, HEIGHT);
+
+    this.drawWindow(WIDTH/2, HEIGHT/2, 400, 250, 0x551255);
+
+    let text : Phaser.GameObjects.Text = this.add.text(100, 100, 'Yes');
+    text.setInteractive();
+    text.on('pointerdown', () => {
+      this.hide();
+    });
   }
 }
 
