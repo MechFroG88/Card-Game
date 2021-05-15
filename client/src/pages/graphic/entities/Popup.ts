@@ -91,7 +91,7 @@ export class Popup extends Phaser.Scene {
    * @param {number} [fillAlpha] Alpha value between 0 and 1 that specifies the opacity of the overlay. Default value is 0.2 or 20%.
    */
   protected drawOverlay(width : number, height : number, fillColor ?: number, fillAlpha ?: number) : void { 
-    this.drawBox(0, 0, width, height, fillColor || 0, fillAlpha || 0.2).setOrigin(0, 0);
+    this.add.rectangle(0, 0, width, height, fillColor || 0, fillAlpha || 0.2).setOrigin(0, 0);
   }
 
   /**
@@ -105,21 +105,6 @@ export class Popup extends Phaser.Scene {
    * @param {number} [fillAlpha] Alpha value between 0 and 1 that specifies the opacity of the window. Default value is 1 or 100%.
    */
   protected drawWindow(x : number, y : number, width : number, height : number, fillColor ?: number, fillAlpha ?: number) : void {
-    this.drawBox(x, y, width, height, fillColor || 0xffffff, fillAlpha || 1);
-  }
-
-  /**
-   * Abstract a box drawing routine for this class.
-   *
-   * @param {number} x X-coordinate of the center of the box.
-   * @param {number} y Y-coordinate of the center of the box.
-   * @param {number} width Width of the box.
-   * @param {number} height Height of the box.
-   * @param {number} fillColor Color of the box.
-   * @param {number} fillAlpha Alpha value between 0 and 1 that specifies the opacity of the box.
-   * @return The Rectangle box created and drawn.
-   */
-  private drawBox(x : number, y : number, width : number, height : number, fillColor : number, fillAlpha : number) : Phaser.GameObjects.Rectangle {
-    return this.add.rectangle(x, y, width, height, fillColor, fillAlpha);
+    this.add.rectangle(x, y, width, height, fillColor || 0xffffff, fillAlpha || 1);
   }
 }
