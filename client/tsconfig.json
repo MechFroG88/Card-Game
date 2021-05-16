@@ -6,7 +6,8 @@
 
   "compilerOptions": {
     "moduleResolution": "node",
-    "outDir": "dist"
+    "outDir": "dist",
+    "typeRoots": ["node_modules/@types", "node_modules/phaser/types"]
   },
 
   "references": [

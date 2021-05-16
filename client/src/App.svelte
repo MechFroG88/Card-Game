@@ -1,8 +1,10 @@
 <script>
-  import { Router, Route } from "svelte-routing";
+  import { Router, Route, Link } from "svelte-routing";
   
   import Home from "./pages/Home.svelte";
   import Room from "./pages/Room.svelte";
+  import Messages from "./pages/messages.svelte";
+  import Graphics from "./pages/graphics.svelte";
 
   export let url = "";
   
@@ -18,3 +20,23 @@
     </Route>
   </div>
 </Router>
+<!-- 
+<Router>
+  <header>
+    <nav>
+      <Link to="/">Home</Link>
+      <Link to="msg">Messages</Link>
+    </nav>
+  </header>
+
+  <main>
+    <Route path="/">
+      <Graphics />
+    </Route>
+
+    <Route path="msg">
+      <Messages />
+    </Route>
+  </main>
+</Router> -->
+
