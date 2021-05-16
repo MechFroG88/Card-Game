@@ -1,15 +1,13 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
 
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "test.ts", "**/*.ts"],
   "exclude": ["node_modules/*", "__sapper__/*", "public/*"],
 
   "compilerOptions": {
     "moduleResolution": "node",
-    "importsNotUsedAsValues": "error",
-    "outDir": "dist",
+    "outDir": "dist"
   },
-  
 
   "references": [
     { "path": "../types" }

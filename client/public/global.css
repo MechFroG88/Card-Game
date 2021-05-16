@@ -61,3 +61,27 @@ button:not(:disabled):active {
 button:focus {
 	border-color: #666;
 }
+
+.card {
+  margin : auto;
+  margin-top: 2rem;
+  padding : 2rem;
+  width: fit-content;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  row-gap: 1rem;
+  border-style: solid;
+  border-width: 0.05rem;
+  border-color: #999;
+}
+
+.grid-container {
+  display: grid;
+  justify-content: flex-start;
+  grid-auto-flow: column;
+}
+
+.grid-container .card {
+  margin-right: 2rem;
+}

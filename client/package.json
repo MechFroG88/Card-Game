@@ -5,7 +5,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear",
+    "start": "sirv public --no-clear -s",
     "validate": "svelte-check"
   },
   "devDependencies": {
@@ -27,7 +27,11 @@
     "typescript": "^4.0.0"
   },
   "dependencies": {
+    "@types/js-cookie": "^2.2.6",
+    "@types/socket.io": "^2.1.13",
+    "js-cookie": "^2.2.1",
     "sirv-cli": "^1.0.0",
-    "socket.io-client": "^4.0.1"
+    "socket.io-client": "^4.0.1",
+    "svelte-routing": "^1.6.0"
   }
 }
