@@ -1,41 +1,43 @@
-const express = require('express');
+import { Room } from "../types";
+import { Request, Response } from 'express';
+import { makeid } from "./helper";
+
+const express = require('express'); 
 const http = require('http');
 const cors = require('cors');
 
-// Creating express app, and hosting it on a http server
 const app = express();
 const server = http.createServer(app);
+const port = process.env.PORT || 3000;
 
-// Instantiating a socket
-const { Server } = require("socket.io");
-const socketOptions = {
-  cors: {
-    origin: "http://localhost:5000",
-  }
-};
-const io = new Server(server, socketOptions);
+if (!process.env.NODE_ENV) 
+  process.env.NODE_ENV = 'development';
 
-app.use(cors());
+if (process.env.NODE_ENV === 'development') {
+  console.log("CORS enabled");
+  app.use(cors());
+}
 
-const PORT:number = 3000;
+var rooms : { [key : string] : Room } = {}; 
 
-type Message = {
-  text:string;
-  id:string;
-};
-let msgs:Array<Message> = [];
+const socket = require('./socket');
+socket(server, rooms);
+app.use(express.json());
 
-
-io.on('connection', (socket:SocketIO.Socket) => {
-  io.emit('chat message', msgs);
-
-  socket.on('disconnect', () => { });
-
-  socket.on('chat message', (msg:string) => {
-    console.log(`message sent by ${socket.id}: ${msg}`);
-    msgs.push({ text: msg, id: socket.id });
-    socket.broadcast.emit('chat message', msgs);
-  });
+app.post('/room', (req : Request , res : Response) => {
+  let roomId = makeid(6);
+  rooms[roomId] = new Room(roomId);
+  res.send({roomId : roomId});
 });
 
-server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+app.get('/room/:id', (req : Request , res : Response) => {
+  if (req.params.id in rooms) {
+    res.send(rooms[req.params.id]);
+  } else {
+    res.status(404).send('Not found');
+  }
+});
+
+server.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`);
+});
