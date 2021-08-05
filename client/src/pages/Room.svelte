@@ -17,7 +17,7 @@
   let userId = Cookies.get("userId");
   let error = '';
 
-  const socket = io("localhost:5252", {
+  const socket = io("ws://localhost:5252", {
     query: {
       "roomId" : roomId,
       "userId" : userId,
