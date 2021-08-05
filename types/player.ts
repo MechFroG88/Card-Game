@@ -6,16 +6,18 @@ export class Player {
   private _id !: string;
   private _name !: string;
   private _socketId !: string;
-  
+  private _ready !: boolean;
   private _position !: number;
-  private role !: Role;
+  
+  
+  private _role !: Role;
   private _hand !: Card [];
   private _play !: Array<{index : number, target : number}>;
   private active !: Card [];
   private _isDeath !: boolean;
   private health !: number;
-  private coin !: number;
-  private coinBid !: number;
+  private _coin !: number;
+  private _bids !: number [];
   private coinIncrement !: number;
   private damage !: number;
   private defence !: number;
@@ -26,11 +28,23 @@ export class Player {
   get id() : string { return this._id }
   set id(_id : string) { this._id = _id }; 
 
+  get role() : Role { return this._role }
+  set role(_role : Role) { this._role = _role }; 
+
   get name() : string { return this._name }
   set name(_name : string) { this._name = _name }; 
+
+  get bids() : number [] { return this._bids }
+  set bids(_bids : number []) { this._bids = _bids };
+
+  get coin() : number { return this._coin}
+  set coin(_coin : number) { this._coin = _coin };
   
   get socketId() : string { return this._socketId }
   set socketId(_socketId : string) { this._socketId = _socketId };
+
+  get ready() : boolean { return this._ready }
+  set ready(_ready : boolean) { this._ready = _ready };
 
   get position() : number { return this._position }
   set position(_position : number) { this._position = _position };
@@ -44,22 +58,22 @@ export class Player {
   get isDeath() : boolean { return this._isDeath }
   set isDeath(_isDeath : boolean) { this._isDeath = _isDeath };
 
-  constructor(id : string, name : string, socketId : string) {
+  constructor(id : string, name : string, socketId : string, position : number) {
     this.id = id;
     this.name = name;
     this.socketId = socketId;
+    this.ready = false;
+    this.position = position;
   }
 
-  initialize(role : Role, position : number) {
-    this.position = position;
+  initialize(role : Role) {
     this.role = role;
     this.hand = [];
-    this.play = Array(3).fill(0).map(x => {return {index : -1, target : -1}; });
+    this.play = [];
     this.active = [];
     this.isDeath = false;
     this.health = role.health;
     this.coin = 5;
-    this.coinBid = 0;
     this.coinIncrement = 2;
     this.damage = 0;
     this.defence = 0;
@@ -68,17 +82,35 @@ export class Player {
     this.immune = false;
   }
 
+  basicData() {
+    return {
+      name : this.name,
+      position : this.position,
+      ready : this.ready
+    }
+  }
+
+  privateBasicData() {
+    return {
+      name : this.name,
+      id : this.id,
+      position : this.position,
+      ready : this.ready
+    }
+  }
+
   privateData() {
     return {
       name : this.name,
+      ready : this.ready,
       position : this.position,
       health : this.health,
       defence : this.defence,
       isDeath : this.isDeath,
+      bids : this.bids,
       hand : this.hand.map(card => card.toJson()),
       play : this.play,
       coin : this.coin,
-      coinBid : this.coinBid,
       role : this.role.toString(),
       active : this.active.map(card => card.toJson()),
     };
@@ -90,6 +122,7 @@ export class Player {
     }
     return {
       name : this.name,
+      ready : this.ready,
       position : this.position,
       health : this.health,
       defence : this.defence,
@@ -99,12 +132,17 @@ export class Player {
     };
   }
 
-  shopStart () : void {
+  shopStart (noOfCards : number) : void {
     this.coin += this.coinIncrement;
+    this.bids = Array(noOfCards).fill(0);
   }
 
   shopEnd () : void {
-    this.coinBid = 0;
+    this.bids = [];
+  }
+
+  pickStart () : void {
+    this.play = Array(3).fill(0).map(x => {return {index : -1, target : -1}; });
   }
 
   endTurn () : void {
@@ -119,21 +157,15 @@ export class Player {
     let hand = [];
     let indices = this.play.map(x => x.index);
     for (let i = 0; i < this.hand.length; i++) {
-      if (i in indices) continue;
+      if (indices.includes(i)) continue;
       hand.push(this.hand[i]); 
     }
     this.hand = hand;
-    this.play = Array(3).fill(0).map(x => { return {index : -1, target : -1}; });
+    this.play = [];
   }
 
   useCoin (coin : number) : void {
     this.coin -= coin;
-  }
-
-  bid (coin : number) : boolean {
-    if (coin > this.coin) return false;
-    this.coinBid = coin;
-    return true;
   }
 
   takeDamage(damage : number) : void {

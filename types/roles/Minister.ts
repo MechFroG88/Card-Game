@@ -8,10 +8,6 @@ export class Minister implements Role {
   health = 15;
   visible = false;
   
-  win(game: Room): boolean {
-    throw new Error("Method not implemented.");
-  }
-  
   toString() : string {
     return "Minister";
   }

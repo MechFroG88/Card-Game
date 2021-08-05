@@ -1,34 +1,31 @@
 import { Card, CardType } from '../Card'
 import { Player } from '../Player';
 
-export class Attack implements Card {
+export class Sleep implements Card {
 
-  cardType = CardType.single;
+  cardType = CardType.self;
   cost = 0;
 
   owner !: Player;
   target !: Player[];
 
   setOwner(owner : Player) : Card {
-    let card = new Attack();
+    let card = new Sleep();
     card.owner = owner;
     return card;
   }
 
-  setTarget(target : Player[]) : void {
-    this.target = target;
-  }
+  setTarget(target : Player[]) : void {}
 
   play(): string {
-    this.target[0].takeDamage(this.owner.dealDamage(1));
-    return `${this.owner.name} uses Attack on ${this.target[0].name}`;
+    return `${this.owner.name} sleeps`;
   }
 
   toJson() {
     return {
-      title : "Attack",
+      title : "Sleep",
       cost : this.cost,
-      description : "Deal 1 damage to a target",
+      description : "Do nothing",
       cardType : this.cardType,
       owner : this.owner?.publicData(),
       target : this.target?.map(target => target.publicData())

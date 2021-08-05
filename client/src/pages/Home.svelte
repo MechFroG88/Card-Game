@@ -1,5 +1,11 @@
 <script>
   import { navigate } from "svelte-routing";
+  import Cookies from 'js-cookie';
+  import ChangeName from '../modal/ChangeName.svelte';
+  import JoinRoom from '../modal/JoinRoom.svelte';
+
+  let changeNameModal;
+  let joinRoomModal;
 
   async function createRoom () {
 		const res = await fetch('http://localhost:3000/room', {
@@ -10,33 +16,26 @@
     navigate(`/room/${json.roomId}`);
 	}
 
-  let roomId = "";
-  let error = "";
-
-  async function joinRoom() {
-    const res = await fetch(`http://localhost:3000/room/${roomId || "none"}`, {
-			method: 'GET',
-		})
-    if (res.status == 200) {
-      navigate(`/room/${roomId}`);
-    } else {
-      error = await res.text();
-    }
-    
-  }
+  let name = Cookies.get("name");
 
 </script>
 
-<div class='card'>
-  <h1>
+<div class='navbar'>
+  <div class='title'>
     The Revolution
-  </h1>
-  <div>
-    <button on:click={createRoom} class='btn btn-default'>Create Room</button>
   </div>
-  <div>
-    <input bind:value={roomId}>
-    <button on:click={joinRoom} class='btn btn-default'>Join Room</button>
-  </div>
-  {error}
 </div>
+
+<div class='card'>
+  <div class='title'>
+    Welcome {name}!
+  </div>
+  <div class='row'>
+    <button on:click={createRoom} class='btn btn-default'>New Game</button>
+    <button on:click={() => joinRoomModal.show()} class='btn btn-default'>Join Game</button>
+    <button on:click={() => changeNameModal.show()} class='btn btn-default'>Change name</button>      
+  </div>
+</div>
+
+<ChangeName visible={false} bind:this={changeNameModal}/>
+<JoinRoom visible={false} bind:this={joinRoomModal}/>

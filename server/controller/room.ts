@@ -1,5 +1,6 @@
-import { Player, Room, Event, Time } from "../../types";
+import { Player, Room, Event, State } from "../../types";
 import { makeid } from "../helper";
+
 
 module.exports = (io : any, socket : SocketIO.Socket, rooms : { [key : string] : Room }) => {
   let data = socket.handshake.query;
@@ -16,25 +17,56 @@ module.exports = (io : any, socket : SocketIO.Socket, rooms : { [key : string] :
   }
 
   let room = rooms[roomId];
-  let player = room.findPlayer(userId) || new Player(makeid(10), name, socket.id);
+  if (room.findPlayer(userId) === undefined && !room.wait()) {
+    socket.emit(Event.error, "The game is still going on. Please come back later");
+    return;
+  }
+
+  let player = room.findPlayer(userId) || new Player(makeid(10), name, socket.id, room.counter++);
 
   userId = player.id;
-
+  
   room.addPlayer(player);
 
   player.socketId = socket.id;
-
-  let roomMaster = room.isRoomMaster(player);
 
   /**
    * Join the user to socket room
    */
   socket.join(roomId);
 
-  socket.emit(Event.connection, {id : player.id, name : player.name, roomMaster : roomMaster});
+  socket.emit(Event.connection, player.privateBasicData());
 
-  const updateRoom = () => {
-    io.in(roomId).emit(Event.getRoom, room.toJson());
+  var countdown = () => {
+    if (room.ready()) {
+      io.in(roomId).emit(Event.countdownStart);
+      room.countdown = setTimeout(() => {
+        room.nextState();
+        updateRoom();
+      }, 3000);
+    }
+  }
+
+  var updateRoom = () => {
+    // All player getSelf
+    for (const [_, player] of Object.entries(room.players)) {
+      io.to(player.socketId).emit(Event.getRoom, 
+        {room : room.toJson(), self : getPlayerData(player)});
+    }
+    // Update room
+    clearTimeout(room.countdown);
+    io.in(roomId).emit(Event.countdownStop);
+    if (room.ready()) {
+      countdown();
+    } 
+  }
+
+  const getPlayerData = (player : Player) => {
+    if (room.wait()) {
+      return player?.privateBasicData();
+    } else {
+      return player?.privateData();
+    }
   }
 
   /**
@@ -49,69 +81,40 @@ module.exports = (io : any, socket : SocketIO.Socket, rooms : { [key : string] :
     if (player !== undefined) {
       room.removePlayer(player.id);
     }
-    console.log(room);
     updateRoom();
   });
 
   /**
-   * Change Name Event
+   * Get Ready Event
    */
-  socket.on(Event.changeName, data => {
-    if (player !== undefined) {
-      player.name = data.name;
-    }
+   socket.on(Event.getReady, () => {
+    player.ready = !player.ready;
     updateRoom();
   });
 
   /**
-   * Start Game Event
+   * Change Config Event
    */
-  socket.on(Event.startGame, () => {
-    if (room.isRoomMaster(player)) {
-      room.startGame();
-    } 
-    // Broadcast startGame Event to players
-    io.in(roomId).emit(Event.startGame, room.gameState());
-    shop();
+  socket.on(Event.changeConfig, data => {
+    room.changeConfig(data.traitor, data.rebel, data.minister);
+    updateRoom();
   });
 
   /**
    * Get Self Event
    */
   socket.on(Event.getSelf, () => {
-    socket.emit(Event.getSelf, player?.privateData());
+    socket.emit(Event.getSelf, getPlayerData(player));
   });
 
   socket.on(Event.bid, data => {
     room.bid(userId, data);
-    socket.emit(Event.getSelf, player?.privateData());
+    updateRoom();
   })
 
   socket.on(Event.pick, data => {
-    player.play = data;
-    socket.emit(Event.getSelf, player?.privateData());
+    room.play(userId, data);
+    updateRoom();
   })
 
-  const shop = () => {
-    room.newShop();
-
-    // Broadcast shopStart Event to players
-    io.in(roomId).emit(Event.shopStart, room.getShop());
-
-    // Set timeout for bidding phase
-    setTimeout(() => {
-      io.in(roomId).emit(Event.shopEnd, room.endShop());
-      pick();
-    }, Time.shop);
-  };
-
-  const pick = () => {
-    room.startPick();
-    io.in(roomId).emit(Event.pickStart, room.gameState());
-
-    setTimeout(() => {
-      io.in(roomId).emit(Event.pickEnd, room.endPick());
-      shop();
-    }, Time.pick);
-  };
 }

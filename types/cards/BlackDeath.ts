@@ -7,7 +7,7 @@ export class BlackDeath implements Card {
   cost = 0;
 
   owner !: Player;
-  targets !: Player[];
+  target !: Player[];
 
   setOwner(owner : Player) : Card {
     let card = new BlackDeath();
@@ -15,13 +15,13 @@ export class BlackDeath implements Card {
     return card;
   }
 
-  setTarget(targets : Player[]) : void {
-    this.targets = targets;
+  setTarget(target : Player[]) : void {
+    this.target = target;
   }
 
   play(): string {
     let owner = <Player> this.owner;
-    this.targets.forEach(
+    this.target.forEach(
       target => target.takeDamage(owner.dealDamage(5))
     );
     return `${this.owner.name} uses Black Death`;
@@ -30,9 +30,11 @@ export class BlackDeath implements Card {
   toJson() {
     return {
       title : "Black Death",
-      cost : 0,
+      cost : this.cost,
       description : "Deal 5 damage to all players",
       cardType : this.cardType,
+      owner : this.owner?.publicData(),
+      target : this.target?.map(target => target.publicData())
     };
   }
   

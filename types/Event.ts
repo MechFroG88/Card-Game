@@ -1,7 +1,10 @@
 export enum Event {
   connection = "connection",
-  changeName = "changeName",
+  changeConfig = "changeConfig",
   getRoom = "getRoom",
+  getReady = "getReady",
+  countdownStart = 'countdownStart',
+  countdownStop = 'countdownStop',
   startGame = "startGame",
   leaveRoom = "leaveRoom",
   shopStart = "shopStart",

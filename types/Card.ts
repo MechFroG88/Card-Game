@@ -42,6 +42,6 @@ export interface Card {
    * 
    * @return The description of the card
    */
-  toJson() : {title : string, cost : number, description : string, cardType : CardType};
+  toJson() : any;
 
 }

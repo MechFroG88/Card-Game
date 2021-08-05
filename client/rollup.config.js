@@ -4,6 +4,7 @@ import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
+import { svelteSVG } from "rollup-plugin-svelte-svg";
 import typescript from '@rollup/plugin-typescript';
 import alias from '@rollup/plugin-alias';
 import sveltePreprocess from 'svelte-preprocess';
@@ -48,13 +49,18 @@ export default {
 				dev: !production
 			}
 		}),
-    // Alias for src directory for shorter file paths for imports
-    alias({
-      resolve: ['.jsx', '.js', '.svelte'], // optional, by default this will just look for .js files or folders
-      entries: [
-        { find: '@', replacement: path.resolve(__dirname, 'src') },
-      ]
-    }),
+        svelteSVG({
+            // optional SVGO options
+            // pass empty object to enable defaults
+            svgo: {}
+        }),
+        // Alias for src directory for shorter file paths for imports
+        alias({
+          resolve: ['.jsx', '.js', '.svelte'], // optional, by default this will just look for .js files or folders
+          entries: [
+            { find: '@', replacement: path.resolve(__dirname, 'src') },
+          ]
+        }),
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
 		css({ output: 'bundle.css' }),

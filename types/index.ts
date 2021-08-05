@@ -4,7 +4,6 @@ export * from './Role';
 export * from './Room';
 export * from './Event';
 export * from './State';
-export * from './Time';
 
 // Roles
 export * from './roles/King';

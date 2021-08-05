@@ -3,3 +3,4 @@ export * from './Defence';
 export * from './BlackDeath';
 export * from './Pray';
 export * from './Torture';
+export * from './Sleep';

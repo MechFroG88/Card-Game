@@ -7,6 +7,7 @@ export class Defence implements Card {
   cost = 0;
 
   owner !: Player;
+  target !: Player[];
 
   setTarget(target : Player) : void { }
 
@@ -24,9 +25,11 @@ export class Defence implements Card {
   toJson() {
     return {
       title : "Defence",
-      cost : 0,
+      cost : this.cost,
       description : "Reduce 1 damage from all attacks",
       cardType : this.cardType,
+      owner : this.owner?.publicData(),
+      target : this.target?.map(target => target.publicData())
     };
   }
   

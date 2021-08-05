@@ -7,6 +7,7 @@ export class Pray implements Card {
   cost = 1;
 
   owner !: Player;
+  target !: Player[];
 
   setTarget(target : Player) : void { }
 
@@ -24,9 +25,11 @@ export class Pray implements Card {
   toJson() {
     return {
       title : "Pray",
-      cost : 1,
+      cost : this.cost,
       description : "Choose a player and restore 2 health",
       cardType : this.cardType,
+      owner : this.owner?.publicData(),
+      target : this.target?.map(target => target.publicData())
     };
   }
   

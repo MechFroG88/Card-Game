@@ -1,13 +1,120 @@
 html, body {
 	position: relative;
 	width: 100%;
-	height: 100%;
+	min-height: 100%;
+  height: 100%;
+}
+
+@font-face {
+  font-family: Arabolical;
+  src: url(fonts/Arabolical-PKJd.ttf);
+}
+
+@font-face {
+  font-family: Magicmedieval;
+  src: url(fonts/Magicmedieval-pRV1.ttf);
+}
+
+.navbar {
+  margin:0;
+  padding:0;
+  color : #DCD6F7;
+  background-color: #424874;
+  font-size: 32px;
+  font-family: 'Arabolical';
+  font-weight: bold;
+  padding: 0.5em;
+}
+
+.navbar .title {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  background-color: #FFFFFF;
+  margin : auto;
+  margin-top: 2rem;
+  padding : 2em 2em 2em 2em;
+  width: fit-content;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  row-gap: 1rem;
+  border : none;
+}
+
+.card .title {
+  font-size: 32px;
+}
+
+.card .row {
+  display : flex;
+  justify-content: space-evenly;
+  column-gap: 10px;
+}
+
+.modal {
+  display : none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4); 
+}
+
+.modal .container {
+  background-color: white;
+  margin : auto;
+  margin-top: 5em;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.modal .content {
+  padding : 2em;
+}
+
+.modal .close {
+  float: right;
+  padding: 1em 1em 0 0;
+}
+
+.modal .close:hover {
+  filter: invert(11%) sepia(90%) saturate(4841%) hue-rotate(337deg) brightness(96%) contrast(109%);
+}
+
+.modal .title {
+  font-size: 32px;
+  margin-bottom: .5em;
+}
+
+.modal .row {
+  display : flex;
+  justify-content: space-evenly;
+  column-gap: 10px;
+}
+
+.modal .error {
+  color: #DA0037;
+}
+
+.room {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  font-size: 48px;
+  color: #424874;
+  background-color: #DCD6F7
 }
 
 body {
-	color: #333;
+  background-color: #F0F0F0;
 	margin: 0;
-	padding: 8px;
+	padding: 0;
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
@@ -45,43 +152,18 @@ input:disabled {
 }
 
 button {
-	color: #333;
-	background-color: #f4f4f4;
-	outline: none;
-}
-
-button:disabled {
-	color: #999;
+	color: #424874;
+	background-color: #F4EEFF;
+  border : none;
+  border-radius: .3em;
+  padding: .5em .9em .5em .9em;
+  outline: none;
 }
 
 button:not(:disabled):active {
-	background-color: #ddd;
+  background-color: #DCD6F7;
 }
 
-button:focus {
-	border-color: #666;
-}
-
-.card {
-  margin : auto;
-  margin-top: 2rem;
-  padding : 2rem;
-  width: fit-content;
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  row-gap: 1rem;
-  border-style: solid;
-  border-width: 0.05rem;
-  border-color: #999;
-}
-
-.grid-container {
-  display: grid;
-  justify-content: flex-start;
-  grid-auto-flow: column;
-}
-
-.grid-container .card {
-  margin-right: 2rem;
+button:hover {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
