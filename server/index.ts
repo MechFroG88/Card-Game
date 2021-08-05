@@ -27,7 +27,7 @@ app.use(express.json());
 app.post('/room', (req : Request , res : Response) => {
   let roomId = makeid(6);
   rooms[roomId] = new Room(roomId);
-  res.send({roomId : roomId});
+  res.send({roomId : "23"});
 });
 
 app.get('/room/:id', (req : Request , res : Response) => {

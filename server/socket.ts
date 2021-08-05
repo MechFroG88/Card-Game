@@ -3,7 +3,7 @@ const { Server } = require("socket.io");
 
 const socketOptions = {
   cors: {
-    origin: "http://localhost:5000",
+    origin: "*",
   }
 };
 

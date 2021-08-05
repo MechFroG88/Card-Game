@@ -7,8 +7,10 @@
   let changeNameModal;
   let joinRoomModal;
 
+  let url = process.env.isProd ? 'ws.the-revolution.tk' : 'localhost:3000';
+
   async function createRoom () {
-		const res = await fetch('http://localhost:3000/room', {
+		const res = await fetch(url + '/room', {
 			method: 'POST',
 		})
 

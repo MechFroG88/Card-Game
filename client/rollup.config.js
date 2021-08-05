@@ -8,6 +8,7 @@ import { svelteSVG } from "rollup-plugin-svelte-svg";
 import typescript from '@rollup/plugin-typescript';
 import alias from '@rollup/plugin-alias';
 import sveltePreprocess from 'svelte-preprocess';
+import replace from '@rollup/plugin-replace';
 import path from 'path';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -49,18 +50,25 @@ export default {
 				dev: !production
 			}
 		}),
-        svelteSVG({
-            // optional SVGO options
-            // pass empty object to enable defaults
-            svgo: {}
-        }),
-        // Alias for src directory for shorter file paths for imports
-        alias({
-          resolve: ['.jsx', '.js', '.svelte'], // optional, by default this will just look for .js files or folders
-          entries: [
-            { find: '@', replacement: path.resolve(__dirname, 'src') },
-          ]
-        }),
+    replace({
+      process: JSON.stringify({
+        env: {
+          isProd: production,
+        }
+      }),
+    }),
+    svelteSVG({
+        // optional SVGO options
+        // pass empty object to enable defaults
+        svgo: {}
+    }),
+    // Alias for src directory for shorter file paths for imports
+    alias({
+      resolve: ['.jsx', '.js', '.svelte'], // optional, by default this will just look for .js files or folders
+      entries: [
+        { find: '@', replacement: path.resolve(__dirname, 'src') },
+      ]
+    }),
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
 		css({ output: 'bundle.css' }),

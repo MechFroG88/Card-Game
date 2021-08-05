@@ -17,7 +17,9 @@
   let userId = Cookies.get("userId");
   let error = '';
 
-  const socket = io("ws://localhost:5252", {
+  let url = process.env.isProd ? 'ws.the-revolution.tk' : 'localhost:3000';
+
+  const socket = io(url, {
     query: {
       "roomId" : roomId,
       "userId" : userId,
