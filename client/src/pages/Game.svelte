@@ -81,7 +81,7 @@
                   <Fa icon={faSkull}/>
                 {:else}
                   <div class='heart'><Fa icon={faHeart}/></div>{player.health}
-                  <div class='handcount'><Poker width=20/></div>{self.handcount}
+                  <div class='handcount'><Poker width=20/></div>{player.handcount}
                 {/if}
               </div>
             </div>
