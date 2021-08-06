@@ -30,7 +30,6 @@
   const showCard = (index) => {
     visibleCard = true;
     selectingTurn = index;
-    console.log(self);
   }
 
   const closePlayer = () => {
@@ -38,10 +37,8 @@
   }
 
   const showPlayer = (index) => {
-    console.log('hi');
     selectingCard = index - 1;
     visiblePlayer = true;
-    console.log(self);
   }
 
   const findPlayer = (position) => {
@@ -111,7 +108,7 @@
 
   $: getPlayers = () => {
     let players = [];
-    for (let player of players) {
+    for (let player of room.players) {
       if (player.isDeath) continue;
       players.push(player);
     }
@@ -235,7 +232,7 @@
             <div class='player {self.play[selectingTurn].target == player.position ? 'selected' : ''}'
             on:click={selectTarget(player.position)}>
               <div class='role'>
-                <Role self={player}/>
+                <Role role={player.role}/>
               </div>
               <div class='data'>
                 <div class='name'>
