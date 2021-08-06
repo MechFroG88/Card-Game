@@ -21,6 +21,10 @@
 
   let name = Cookies.get("name");
 
+  const rename = () => {
+    name = Cookies.get("name");
+  }
+
 </script>
 
 <div class='navbar'>
@@ -40,5 +44,5 @@
   </div>
 </div>
 
-<ChangeName visible={false} bind:this={changeNameModal}/>
+<ChangeName visible={false} callback={rename} bind:this={changeNameModal}/>
 <JoinRoom visible={false} bind:this={joinRoomModal}/>

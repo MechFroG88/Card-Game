@@ -6,10 +6,10 @@
   export let callback;
 
   let name = Cookies.get("name");
+  let error = ''
 
   export const close = () => {
     visible = false
-    console.log('hi')
   }
 
   export const show = () => {
@@ -17,6 +17,14 @@
   }
 
   const changeName = () => {
+    if (name.length == 0) {
+      error = 'Please enter your name!'
+      return;
+    }
+    if (name.length >= 11) {
+      error = 'Your name is too long!'
+      return;
+    }
     Cookies.set("name", name);
     close();
     if (callback !== undefined) {
@@ -36,7 +44,15 @@
         <input bind:value={name}>
         <button on:click={changeName}>Confirm</button>
       </div>
+      <div class='error'>
+        {error}
+      </div>
     </div>
   </div>
-  
 </div>
+
+<style lang='scss'>
+  .error {
+    color: red;
+  }
+</style>

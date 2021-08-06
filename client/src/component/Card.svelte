@@ -363,7 +363,7 @@
     }
     .title {
       font-size: 32px;
-      margin: 0;
+      margin: 0 1em 0 1em;
       text-align: center;
     }
     .cost {
@@ -371,9 +371,10 @@
       font-size: 32px;
     }
     .description{
+      margin: auto;
       text-align: center;
-      padding: 10px 20px 10px 20px;
-      width: 160px;
+      width: 180px;
+      word-wrap : break-word;
     }
     .footer-target {
       text-align: center;
