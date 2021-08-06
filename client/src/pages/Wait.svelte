@@ -3,6 +3,7 @@
   import { navigate } from "svelte-routing";
   import { SettingsIcon, PlusIcon, MinusIcon, UsersIcon, LogOutIcon, AwardIcon, CheckIcon, XIcon } from 'svelte-feather-icons'
   import Timer from '../component/Timer.svelte';
+  import Logo from '../svg/castle.svg';
 
   export let room;
   export let socket;
@@ -32,7 +33,7 @@
   
 <div class='navbar'>
   <div class='title'>
-    The Revolution
+    <Logo width=32/> The Revolution
   </div>
 </div>
 <div class='room'>

@@ -1,6 +1,7 @@
 <script>
   import { navigate } from "svelte-routing";
   import Cookies from 'js-cookie';
+  import Logo from '../svg/castle.svg';
   import ChangeName from '../modal/ChangeName.svelte';
   import JoinRoom from '../modal/JoinRoom.svelte';
 
@@ -24,7 +25,7 @@
 
 <div class='navbar'>
   <div class='title'>
-    The Revolution
+    <Logo width=32/> The Revolution
   </div>
 </div>
 

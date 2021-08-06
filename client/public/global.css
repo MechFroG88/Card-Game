@@ -5,30 +5,22 @@ html, body {
   height: 100%;
 }
 
-@font-face {
-  font-family: Arabolical;
-  src: url(fonts/Arabolical-PKJd.ttf);
-}
-
-@font-face {
-  font-family: Magicmedieval;
-  src: url(fonts/Magicmedieval-pRV1.ttf);
-}
-
 .navbar {
   margin:0;
   padding:0;
   color : #DCD6F7;
   background-color: #424874;
+  fill: #DCD6F7;
   font-size: 32px;
-  font-family: 'Arabolical';
-  font-weight: bold;
+  font-weight: 500;
   padding: 0.5em;
 }
 
 .navbar .title {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 12px;
 }
 
 .card {
