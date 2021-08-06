@@ -43,11 +43,26 @@ export class Room {
   get turn () :  Array<Array<Card>> { return this._turn; }
   set turn ( _turn : Array<Array<Card>> ) { this._turn = _turn; }
 
+  private deckIndex = 0;
+
   private deck: Card[] = [
-    new Cards.BlackDeath(),
+    new Cards.Pray(),
+    new Cards.Pray(),
+    new Cards.Pray(),
+    new Cards.Pray(),
     new Cards.Pray(),
     new Cards.Torture(),
+    new Cards.Torture(),
+    new Cards.Torture(),
+    new Cards.Torture(),
+    new Cards.Torture(),
     new Cards.Eviscerate(),
+    new Cards.Eviscerate(),
+    new Cards.Eviscerate(),
+    new Cards.Eviscerate(),
+    new Cards.Eviscerate(),
+    new Cards.BlackDeath(),
+    new Cards.BlackDeath(),
     new Cards.Dummy(),
     new Cards.Guard(),
     new Cards.Alchemy(),
@@ -368,15 +383,21 @@ export class Room {
    * Start Shop phase
    */
   private newShop() : void {
-    this.shopCards = [];
-    for (let i = 0; i < this.playerCount; i++) {
-      this.shopCards.push(this.deck[this.randomInteger(0, this.deck.length - 1)]);
-    }
     let alivePlayer = 0;
     let players = Object.values(this.players);
     for (let player of players) {
       if (player.isDeath) continue;
       alivePlayer += 1;
+    }
+
+    this.shopCards = [];
+    for (let i = 0; i < alivePlayer; i++) {
+      if (this.deckIndex == this.deck.length) {
+        this.deckIndex = 0;
+        this.shuffle(this.deck);
+      }
+      this.shopCards.push(this.deck[this.deckIndex]);
+      this.deckIndex += 1;
     }
     players.forEach(player => player.shopStart(alivePlayer));
   }
