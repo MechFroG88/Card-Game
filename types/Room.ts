@@ -173,6 +173,7 @@ export class Room {
    */
   startGame () : void {
     let roles = this.shuffleRole();
+    this.shuffle(this.deck);
     let index = 0;
     for (const id in this.players) {
       this.players[id].initialize(roles[index]);
