@@ -46,8 +46,11 @@
       </div>
       <div class='body'>
         <div class='stats'>
-          <div class='heart'><Fa icon={faHeart}/></div>
-          {self.health}
+          {#if self.isDeath}
+            <Fa icon={faSkull}/>
+          {:else}
+            <div class='heart'><Fa icon={faHeart}/></div> {self.health}
+          {/if}
         </div>
         <div class='stats'>
           <div class='coin'><Fa icon={faCoins}/></div>

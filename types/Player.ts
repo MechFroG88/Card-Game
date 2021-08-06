@@ -19,7 +19,7 @@ export class Player {
   private _coin !: number;
   private _bids !: number [];
   private coinIncrement !: number;
-  private damage !: number;
+  private damage !: number[];
   private defence !: number;
   private roundDamage !: number;
   private amplify !: number;
@@ -75,7 +75,7 @@ export class Player {
     this.health = role.health;
     this.coin = 5;
     this.coinIncrement = 2;
-    this.damage = 0;
+    this.damage = [];
     this.defence = 0;
     this.roundDamage = 0;
     this.amplify = 0;
@@ -144,12 +144,14 @@ export class Player {
   }
 
   endTurn () : void {
-    this.health -= this.damage;
-    this.damage = 0;
+    for (let damage of this.damage) {
+      this.health -= Math.max(damage - this.defence, 0);
+    }
+    this.damage = [];
+    this.defence = 0;
     if (this.health <= 0) {
       this.isDeath = true;
     }
-    this.defence = 0;
   }
 
   endRound () : void {
@@ -169,9 +171,7 @@ export class Player {
 
   takeDamage(damage : number) : void {
     if (this.isImmune()) return;
-    damage -= this.defence;
-    damage = Math.max(damage, 0);
-    this.damage += damage;
+    this.damage.push(damage);
     this.roundDamage += damage;
   }
 
