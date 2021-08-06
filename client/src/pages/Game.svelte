@@ -179,7 +179,6 @@
         justify-content: center;
         row-gap: 18px;
         overflow-y: auto;
-        max-height: 400px;
 
         .ready {
           background-color: #99F3BD !important;
@@ -190,6 +189,7 @@
           padding: .5em 1em;
           border-radius: 12px;
           display: grid;
+          grid-template-columns: 40px 100px;
           align-items: center;
           justify-content: center;
           grid-auto-flow: column;
@@ -197,6 +197,7 @@
           color: #424874;
           background-color: white;
           .role {
+            text-align: center;
             font-size: 46px;
           }
           .data {
@@ -234,8 +235,8 @@
       display: grid;
       align-items: center;
       justify-content: center;
-      grid-auto-flow: column;
-      column-gap: 2em;
+      grid-template-columns: auto auto auto auto;
+      gap: 2em;
       min-width: 500px;
       padding: 1em 1em 1em 1em;
 

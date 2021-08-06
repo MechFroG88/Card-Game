@@ -89,7 +89,7 @@ export class Room {
 
   nextState() : void {
     if (this.end !== '') {
-      this.unready();
+      this.unready(true);
       this.state = State.wait;
       this.end = '';
     } else if (this.state == State.wait) {
@@ -314,9 +314,15 @@ export class Room {
     }
   }
 
-  private unready() : void {
+  private unready(force = false) : void {
     let players = Object.values(this.players);
-    players.forEach(player => player.ready = false);
+    for (let player of players) {
+      if (force) {
+        player.ready = false;
+      }
+      if (player.isDeath) continue;
+      player.ready = false;
+    }
   }
 
   /**
