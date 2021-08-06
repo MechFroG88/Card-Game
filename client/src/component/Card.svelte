@@ -371,8 +371,9 @@
       font-size: 32px;
     }
     .description{
-      margin: auto;
       text-align: center;
+      padding: 10px 20px 10px 20px;
+      margin: auto;
       width: 180px;
       word-wrap : break-word;
     }
