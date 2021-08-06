@@ -49,21 +49,18 @@ export class Room {
     new Cards.Pray(),
     new Cards.Pray(),
     new Cards.Pray(),
-    new Cards.Pray(),
-    new Cards.Pray(),
     new Cards.Torture(),
     new Cards.Torture(),
     new Cards.Torture(),
-    new Cards.Torture(),
-    new Cards.Torture(),
-    new Cards.Eviscerate(),
-    new Cards.Eviscerate(),
-    new Cards.Eviscerate(),
     new Cards.Eviscerate(),
     new Cards.Eviscerate(),
     new Cards.BlackDeath(),
     new Cards.BlackDeath(),
+    new Cards.RainingArrows(),
+    new Cards.RainingArrows(),
     new Cards.Dummy(),
+    new Cards.Dummy(),
+    new Cards.Guard(),
     new Cards.Guard(),
     new Cards.Alchemy(),
     new Cards.Armour(),
@@ -73,7 +70,6 @@ export class Room {
     new Cards.HolyWater(),
     new Cards.Propaganda(),
     new Cards.Rain(),
-    new Cards.RainingArrows(),
     new Cards.Reflect(),
     new Cards.Sabotage(),
     new Cards.Steal(),
@@ -460,7 +456,10 @@ export class Room {
     let players = Object.values(this.players);
     players.forEach(player => player.pickStart());
     for (const card of this.defaultCards) {
-      players.forEach(player => player.addHand(card));
+      players.forEach(player => {
+        if (player.isDeath) return;
+        player.addHand(card)
+      });
     }
   }
 
