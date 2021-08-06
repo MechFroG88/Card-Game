@@ -116,7 +116,8 @@ export class Player {
     };
   }
 
-  publicData() {
+  publicData(visible = false) {
+    visible = visible || this.role.visible || this.isDeath;
     return {
       name : this.name,
       ready : this.ready,
@@ -124,7 +125,7 @@ export class Player {
       health : this.health,
       defence : this.defence,
       isDeath : this.isDeath,
-      role : this.role.visible || this.isDeath ? this.role.toString() : "?",
+      role : visible ? this.role.toString() : "?",
       active : this.active.map(card => card.toJson()),
     };
   }
@@ -143,6 +144,8 @@ export class Player {
   }
 
   endTurn () : void {
+    this.health -= this.damage;
+    this.damage = 0;
     if (this.health <= 0) {
       this.isDeath = true;
     }
@@ -168,7 +171,7 @@ export class Player {
     if (this.isImmune()) return;
     damage -= this.defence;
     damage = Math.max(damage, 0);
-    this.health -= damage;
+    this.damage += damage;
     this.roundDamage += damage;
   }
 

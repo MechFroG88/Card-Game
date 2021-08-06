@@ -263,7 +263,7 @@ export class Room {
       roundCounter : this.roundCounter,
       players : this.state == State.wait ? 
         players.map(player => player.basicData()) : 
-        players.map(player => player.publicData())
+        players.map(player => player.publicData(this.end !== ''))
     };
   }
 
