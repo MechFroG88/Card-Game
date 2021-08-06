@@ -8,7 +8,7 @@
   let changeNameModal;
   let joinRoomModal;
 
-  let url = process.env.isProd ? 'http://ws.the-revolution.tk' : 'http://localhost:3000';
+  let url = process.env.isProd ? 'https://ws.the-revolution.tk' : 'http://localhost:3000';
 
   async function createRoom () {
 		const res = await fetch(url + '/room', {
