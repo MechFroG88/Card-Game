@@ -186,13 +186,12 @@
         justify-content: center;
         column-gap: 12px;
         .name {
-          min-width: 100px;
           display:flex;
           align-items: center;
           justify-content: center;
           padding: 1em;
           margin: .5em;
-          border-radius: 10em;
+          border-radius: 12px;
           background-color: white;
         }
         .ready {
