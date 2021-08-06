@@ -28,6 +28,7 @@
   }
 
   const showCard = (index) => {
+    if (self.isDeath) return;
     visibleCard = true;
     selectingTurn = index;
   }
@@ -36,7 +37,21 @@
     visiblePlayer = false;
   }
 
+  const minus = (index) => {
+    if (self.isDeath) return;
+    self.bids[index]--;
+    self.bids[index] = Math.max(0,self.bids[index]);
+    bid();
+  }
+
+  const plus = (index) => {
+    if (self.isDeath) return;
+    self.bids[index]++;
+    bid();
+  }
+
   const showPlayer = (index) => {
+    if (self.isDeath) return;
     selectingCard = index - 1;
     visiblePlayer = true;
   }
@@ -130,9 +145,9 @@
       <div class='title'>{card.title}</div>
       <div class='description'>{card.description}</div>
       <div class='footer-shop'>
-        <button class='minus' on:click={() => {self.bids[index]--;self.bids[index] = Math.max(0,self.bids[index]);bid();}}><MinusIcon size='18'/></button>
+        <button class='minus' on:click={() => minus(index)}><MinusIcon size='18'/></button>
         <span class='middle'>{self.bids[index]}</span>
-        <button class='plus' on:click={() => {self.bids[index]++;bid();}}><PlusIcon size='18'/></button>
+        <button class='plus' on:click={() => plus(index)}><PlusIcon size='18'/></button>
       </div>
     </div>
   {/each}

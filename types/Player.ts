@@ -143,7 +143,7 @@ export class Player {
   }
 
   endTurn () : void {
-    if (this.health < 0) {
+    if (this.health <= 0) {
       this.isDeath = true;
     }
     this.defence = 0;

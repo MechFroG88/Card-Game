@@ -70,8 +70,11 @@
                 {player.name}
               </div>
               <div class='stats'>
-                <div class='heart'><Fa icon={faHeart}/></div> {player.health}
-                {#if player.isDeath}<Fa icon={faSkull}/>{/if}
+                {#if player.isDeath}
+                  <Fa icon={faSkull}/>
+                {:else}
+                  <div class='heart'><Fa icon={faHeart}/></div> {player.health}
+                {/if}
               </div>
             </div>
           </div>
