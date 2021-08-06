@@ -194,7 +194,6 @@
         align-items: center;
         justify-content: center;
         row-gap: 18px;
-        overflow-y: auto;
 
         .ready {
           background-color: #99F3BD !important;

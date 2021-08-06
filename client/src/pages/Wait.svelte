@@ -193,11 +193,10 @@
           padding: 1em;
           margin: .5em;
           border-radius: 10em;
-          border-style: solid;
+          background-color: white;
         }
         .ready {
-          fill: #16C79A;
-          color: #16C79A;
+          background-color: #99F3BD;
         }
       }
     }

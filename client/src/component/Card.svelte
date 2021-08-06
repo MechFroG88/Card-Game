@@ -1,6 +1,7 @@
 <script>
   import CardIcon from './CardIcon.svelte';
   import Role from '../component/Role.svelte';
+  import Poker from '../svg/poker.svg';
 
   import Fa from 'svelte-fa';
   import { faHeart, faCrosshairs } from '@fortawesome/free-solid-svg-icons';
@@ -256,7 +257,8 @@
                   {player.name}
                 </div>
                 <div class='stats'>
-                  <div class='heart'><Fa icon={faHeart}/></div> {player.health}
+                  <div class='heart'><Fa icon={faHeart}/></div>{player.health}
+                  <div class='handcount'><Poker width=20/></div>{player.handcount}
                 </div>
               </div>
             </div>
@@ -269,6 +271,21 @@
 
 
 <style lang='scss'>
+
+  .heart {
+    color: #FF4848;
+  }
+
+  .handcount {
+    fill: #7C83FD;
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 8px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
   .pick {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   }
@@ -292,12 +309,13 @@
       justify-content: center;
       max-height: 400px;
       .player {
+        display: grid;
+        grid-template-columns: 40px 100px;
         font-weight: 500;
         padding: .5em 1em;
         margin: 1em;
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
         border-radius: 12px;
-        display: grid;
         align-items: center;
         justify-content: center;
         grid-auto-flow: column;
@@ -311,13 +329,14 @@
             font-size: 18px;
           }
           .stats {
-            display: flex;
+            margin-top: 4px;
+            display: grid;
+            column-gap: 8px;
+            grid-auto-flow: column;
+            justify-content: center;
             align-items: center;
+            text-align: center;
             font-size: 18px;
-            .heart {
-              width : 1em;
-              margin-right: .4em;
-            }
           }
         }
       }
