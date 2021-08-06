@@ -448,6 +448,7 @@ export class Room {
    */
    private endPick() : void {
     let players = Object.values(this.players);
+    this.turn = [];
     for (let turn = 0; turn < 3; turn++) {
       let cards = [];
       for (let player of players) {
