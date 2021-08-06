@@ -144,14 +144,19 @@ export class Player {
   }
 
   endTurn () : void {
+    if (this.immune) return;
     for (let damage of this.damage) {
       this.health -= Math.max(damage - this.defence, 0);
     }
-    this.damage = [];
-    this.defence = 0;
     if (this.health <= 0) {
       this.isDeath = true;
     }
+  }
+
+  startTurn () : void {
+    this.immune = false;
+    this.damage = [];
+    this.defence = 0;
   }
 
   endRound () : void {
@@ -185,6 +190,10 @@ export class Player {
 
   addHealth(health : number) : void {
     this.health += health;
+  }
+
+  makeImmune() : void {
+    this.immune = true;
   }
 
   isImmune() : boolean {

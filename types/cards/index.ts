@@ -4,3 +4,6 @@ export * from './BlackDeath';
 export * from './Pray';
 export * from './Torture';
 export * from './Sleep';
+export * from './Eviscerate';
+export * from './Dummy';
+export * from './Guard';

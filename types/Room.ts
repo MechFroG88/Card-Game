@@ -42,7 +42,10 @@ export class Room {
   private deck: Card[] = [
     new Cards.BlackDeath(),
     new Cards.Pray(),
-    new Cards.Torture()
+    new Cards.Torture(),
+    new Cards.Eviscerate(),
+    new Cards.Dummy(),
+    new Cards.Guard()
   ];
   
   private _defaultCards: Card[] = [
@@ -93,7 +96,7 @@ export class Room {
       this.state = State.wait;
       this.end = '';
     } else if (this.state == State.wait) {
-      this.unready();
+      this.unready(true);
       this.startGame();
       this.newShop();
       this.state = State.shop;
@@ -410,6 +413,7 @@ export class Room {
    */
   private startTurn(turn : number) : void {
     let players = Object.values(this.players);
+    players.map(player => player.startTurn());
     let log = [];
     for (let player of players) {
       // Death player die

@@ -5,6 +5,9 @@
   import Pray from '../svg/pray.svg';
   import Torture from '../svg/torture.svg';
   import BlackDeath from '../svg/blackdeath.svg';
+  import Guard from '../svg/guard.svg';
+  import Dummy from '../svg/dummy.svg';
+  import Eviscerate from '../svg/eviscerate.svg';
 
   export let title;
   
@@ -22,4 +25,10 @@
   <Torture width=100 height=100/>
 {:else if title == 'Black Death'}
   <BlackDeath width=100 height=100/>
+{:else if title == 'Guard'}
+  <Guard width=100 height=100/>
+{:else if title == 'Dummy'}
+  <Dummy width=100 height=100/>
+{:else if title == 'Eviscerate'}
+  <Eviscerate width=100 height=100/>
 {/if}
