@@ -2,7 +2,7 @@ import { Player, Room, Event, State } from "../../types";
 import { makeid } from "../helper";
 
 
-module.exports = (io : any, socket : SocketIO.Socket, rooms : { [key : string] : Room }) => {
+module.exports = (io : any, socket : any, rooms : { [key : string] : Room }) => {
   let data = socket.handshake.query;
   let roomId = data.roomId;
   let userId = data.userId;
@@ -95,7 +95,7 @@ module.exports = (io : any, socket : SocketIO.Socket, rooms : { [key : string] :
   /**
    * Change Config Event
    */
-  socket.on(Event.changeConfig, data => {
+  socket.on(Event.changeConfig, (data : any) => {
     room.changeConfig(data.traitor, data.rebel, data.minister);
     updateRoom();
   });
@@ -107,12 +107,12 @@ module.exports = (io : any, socket : SocketIO.Socket, rooms : { [key : string] :
     socket.emit(Event.getSelf, getPlayerData(player));
   });
 
-  socket.on(Event.bid, data => {
+  socket.on(Event.bid, (data : any) => {
     room.bid(userId, data);
     updateRoom();
   })
 
-  socket.on(Event.pick, data => {
+  socket.on(Event.pick, (data : any) => {
     room.play(userId, data);
     updateRoom();
   })

@@ -10,7 +10,7 @@ const socketOptions = {
 module.exports = (server : any, rooms : { [key : string] : Room }) => {
   const io = new Server(server, socketOptions);
 
-  io.on(Event.connection, (socket : SocketIO.Socket)  => {
+  io.on(Event.connection, (socket : any)  => {
     require('./controller/room')(io, socket, rooms);
   });
 }; 

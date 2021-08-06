@@ -265,8 +265,5 @@
         background-color: #28DF99;
       }
     }
-    .play {
-      padding-left: 1em;
-    } 
   }
 </style>

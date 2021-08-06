@@ -51,11 +51,7 @@ export default {
 			}
 		}),
     replace({
-      process: JSON.stringify({
-        env: {
-          isProd: production,
-        }
-      }),
+      'process.env.isProd': production,
     }),
     svelteSVG({
         // optional SVGO options

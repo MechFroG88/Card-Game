@@ -278,9 +278,6 @@
       align-items: center;
       justify-content: center;
       max-height: 400px;
-      .ready {
-        border-color:#16C79A;
-      }
       .player {
         font-weight: 500;
         padding: .5em 1em;
