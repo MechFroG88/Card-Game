@@ -225,6 +225,7 @@
               font-size: 18px;
             }
             .stats {
+              margin-top: 4px;
               display: grid;
               column-gap: 8px;
               grid-auto-flow: column;
