@@ -2,38 +2,32 @@ import { Card, CardType } from '../Card'
 import { Player } from '../Player';
 import { Room } from '../Room';
 
-export class Attack implements Card {
+export class Vacation implements Card {
 
-  cardType = CardType.single;
-  cost = 0;
+  cardType = CardType.self;
+  cost = 5;
 
   owner !: Player;
   target !: Player[];
 
   setOwner(owner : Player) : Card {
-    let card = new Attack();
+    let card = new Vacation();
     card.owner = owner;
     return card;
   }
 
-  setTarget(target : Player[]) : void {
-    this.target = target;
-  }
+  setTarget(target : Player[]) : void {}
 
   play(room : Room): void {
-    if (this.target[0].isNullify()) return;
-    if (this.target[0].isReflecting()) {
-      this.owner.takeDamage(this.owner.dealDamage(1));
-      return;
-    } 
-    this.target[0].takeDamage(this.owner.dealDamage(1));
+    if (this.owner.isNullify()) return;
+    this.owner.makeRoundNullify();
   }
 
   toJson() {
     return {
-      title : "Attack",
+      title : "Vacation",
       cost : this.cost,
-      description : "Deal 1 damage to a target",
+      description : "Nullify all card effects on you and your action card for the following turns",
       cardType : this.cardType,
       owner : this.owner?.publicData(),
       target : this.target?.map(target => target.publicData())

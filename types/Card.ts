@@ -1,6 +1,8 @@
 import { Player } from './Player';
+import { Room } from './Room';
 
 export enum CardType {
+  room = "room", // room card
   self = "self", // self card
   single = "single", // single target card
   multiple = "multiple" // multiple targets card
@@ -19,9 +21,19 @@ export interface Card {
   cost : number;
 
   /**
+   * Owner of card
+   */
+  owner : Player;
+
+  /**
+   * Target of card;
+   */
+  target : Player[];
+
+  /**
    * The play action for the card
    */
-  play() : string;
+  play(room : Room) : void;
 
   /**
    * Set the owner of the card

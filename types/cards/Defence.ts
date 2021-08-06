@@ -1,5 +1,6 @@
 import { Card, CardType } from '../Card'
 import { Player } from '../Player';
+import { Room } from '../Room';
 
 export class Defence implements Card {
 
@@ -17,9 +18,9 @@ export class Defence implements Card {
     return card;
   }
 
-  play(): string {
+  play(room : Room): void {
+    if (this.owner.isNullify()) return;
     this.owner.increaseDefence(1);
-    return `${this.owner.name} uses Defence`;
   }
 
   toJson() {

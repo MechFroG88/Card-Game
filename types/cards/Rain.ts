@@ -2,16 +2,16 @@ import { Card, CardType } from '../Card'
 import { Player } from '../Player';
 import { Room } from '../Room';
 
-export class BlackDeath implements Card {
+export class Rain implements Card {
 
   cardType = CardType.multiple;
-  cost = 0;
+  cost = 2;
 
   owner !: Player;
   target !: Player[];
 
   setOwner(owner : Player) : Card {
-    let card = new BlackDeath();
+    let card = new Rain();
     card.owner = owner;
     return card;
   }
@@ -20,25 +20,20 @@ export class BlackDeath implements Card {
     this.target = target;
   }
 
-  play(room : Room): void {
-    let owner = <Player> this.owner;
+  play(room : Room) : void {
     this.target.forEach(
       target => {
         if (target.isNullify()) return;
-        if (target.isReflecting()) {
-          this.owner.takeDamage(this.owner.dealDamage(5));
-          return;
-        }
-        target.takeDamage(this.owner.dealDamage(5))
+        target.restoreHealth(2);
       }
     );
   }
 
   toJson() {
     return {
-      title : "Black Death",
+      title : "Rain",
       cost : this.cost,
-      description : "Deal 5 damage to all players",
+      description : "Restore 2 health to all players",
       cardType : this.cardType,
       owner : this.owner?.publicData(),
       target : this.target?.map(target => target.publicData())

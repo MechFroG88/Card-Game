@@ -1,5 +1,6 @@
 import { Card, CardType } from '../Card'
 import { Player } from '../Player';
+import { Room } from '../Room';
 
 export class Sleep implements Card {
 
@@ -17,9 +18,7 @@ export class Sleep implements Card {
 
   setTarget(target : Player[]) : void {}
 
-  play(): string {
-    return `${this.owner.name} sleeps`;
-  }
+  play(room : Room): void {}
 
   toJson() {
     return {

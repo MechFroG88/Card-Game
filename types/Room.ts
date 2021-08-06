@@ -37,7 +37,11 @@ export class Room {
   private shopCards !: Card[];
   private shopResult !: String[];
 
+  private _turn : Array<Array<Card>> = [];
   private log : Array<Array<Card>> = [];
+
+  get turn () :  Array<Array<Card>> { return this._turn; }
+  set turn ( _turn : Array<Array<Card>> ) { this._turn = _turn; }
 
   private deck: Card[] = [
     new Cards.BlackDeath(),
@@ -45,7 +49,22 @@ export class Room {
     new Cards.Torture(),
     new Cards.Eviscerate(),
     new Cards.Dummy(),
-    new Cards.Guard()
+    new Cards.Guard(),
+    new Cards.Alchemy(),
+    new Cards.Armour(),
+    new Cards.Bloodletting(),
+    new Cards.Business(),
+    new Cards.Festival(),
+    new Cards.HolyWater(),
+    new Cards.Propaganda(),
+    new Cards.Rain(),
+    new Cards.RainingArrows(),
+    new Cards.Reflect(),
+    new Cards.Sabotage(),
+    new Cards.Steal(),
+    new Cards.Sword(),
+    new Cards.Vacation(),
+    new Cards.Vengeance()
   ];
   
   private _defaultCards: Card[] = [
@@ -84,8 +103,15 @@ export class Room {
 
   ready() : boolean {
     let ready = this.playerCount == this.king + this.minister + this.rebel + this.traitor;
-    for (const id in this.players) {
-      ready &&= this.players[id].ready;
+    if (this.state == State.wait) {
+      for (const id in this.players) {
+        ready &&= this.players[id].ready;
+      }
+    } else {
+      for (const id in this.players) {
+        if (this.players[id].isDeath) continue;
+        ready &&= this.players[id].ready;
+      }
     }
     return ready
   }
@@ -110,6 +136,7 @@ export class Room {
       this.state = State.pick;
     } else if (this.state == State.pick) {
       this.unready();
+      this.endPick();
       this.startTurn(0);
       this.state = State.turn1;
       this.checkWin();
@@ -125,7 +152,6 @@ export class Room {
       this.checkWin();
     } else if (this.state == State.turn3) {
       this.unready();
-      this.endRound();
       this.newShop();
       this.state = State.shop;
     }
@@ -171,10 +197,10 @@ export class Room {
     if (!(id in this.players)) return;
     this.playerCount -= 1;
     this.setRole();
+    delete this.players[id];
     if (this.roomMaster?.id == id) {
       this.roomMaster = Object.values(this.players)[0];
     }
-    delete this.players[id];
   }
 
   /**
@@ -197,6 +223,17 @@ export class Room {
     if (this.roomMaster === undefined) return false;
     if (player === undefined) return false;
     return this.roomMaster.id === player.id;
+  }
+
+  getCurrentTurn () : number {
+    if (this.state == State.turn1) {
+      return 0;
+    } else if (this.state == State.turn2) {
+      return 1;
+    } else if (this.state == State.turn3) {
+      return 2;
+    }
+    return -1;
   }
 
   /**
@@ -271,7 +308,6 @@ export class Room {
   }
 
   private checkWin() : void {
-
     if (this.kingPlayer.isDeath) {
       let players = Object.values(this.players);
       let traitor = false;
@@ -336,9 +372,13 @@ export class Room {
     for (let i = 0; i < this.playerCount; i++) {
       this.shopCards.push(this.deck[this.randomInteger(0, this.deck.length - 1)]);
     }
-
+    let alivePlayer = 0;
     let players = Object.values(this.players);
-    players.forEach(player => player.shopStart(this.playerCount));
+    for (let player of players) {
+      if (player.isDeath) continue;
+      alivePlayer += 1;
+    }
+    players.forEach(player => player.shopStart(alivePlayer));
   }
 
   /**
@@ -359,7 +399,7 @@ export class Room {
     this.shopResult = [];
     // Give the cards to the highest bidder
     for (let i = 0; i < this.shopCards.length; i++) {
-      let maxBid = this.shopCards[i].cost;
+      let maxBid = this.shopCards[i].cost - 1;
       let maxPlayer = undefined;
 
       for (const [id, player] of Object.entries(this.players)) {
@@ -403,9 +443,41 @@ export class Room {
     }
   }
 
-  private endRound() : void {
+  /**
+   * End Picking phase
+   */
+   private endPick() : void {
     let players = Object.values(this.players);
-    players.forEach(player => player.endRound());
+    for (let turn = 0; turn < 3; turn++) {
+      let cards = [];
+      for (let player of players) {
+        // Death player die
+        if (player.isDeath) continue;
+
+        let index = player.play[turn].index;
+
+        // ignore sleep
+        if (index < 0) {
+          cards.push(new Cards.Sleep().setOwner(player));
+          continue;
+        }
+
+        // Card logic
+        let card = player.hand[index];
+        let cardType = card.cardType;
+        if (cardType === CardType.multiple) {
+          card.setTarget(players);
+        } else if (cardType === CardType.single) {
+          if (player.play[turn].target === -1) continue;
+          let target = players.findIndex(x => x.position == player.play[turn].target);
+          card.setTarget([players[target]]);
+        }
+        cards.push(card);
+      }
+      this.turn.push(cards);
+    }
+    players.forEach(player => player.clearHand());
+    players.forEach(player => player.startRound());
   }
 
   /**
@@ -413,36 +485,27 @@ export class Room {
    */
   private startTurn(turn : number) : void {
     let players = Object.values(this.players);
-    players.map(player => player.startTurn());
+    let cards = this.turn[turn];
+    let roomCards = [];
+    let selfCards = [];
+    let targetCards = [];
     let log = [];
-    for (let player of players) {
+    for (let card of cards) {
       // Death player die
-      if (player.isDeath) continue;
-      
-      let index = player.play[turn].index;
-
-      // ignore sleep
-      if (index < 0) {
-        log.push(new Cards.Sleep().setOwner(player).toJson());
-        continue;
+      if (card.owner.isDeath) continue;
+      if (card.cardType === CardType.room) {
+        roomCards.push(card);
+      } else if (card.cardType === CardType.self) {
+        selfCards.push(card);
+      } else {
+        targetCards.push(card);
       }
-
-      // Card logic
-      let card = player.hand[index];
-      let cardType = card.cardType;
-      if (cardType === CardType.self) {
-        card.play();
-      } else if (cardType === CardType.multiple) {
-        card.setTarget(players);
-        card.play();
-      } else if (cardType === CardType.single) {
-        if (player.play[turn].target === -1) continue;
-        let target = players.findIndex(x => x.position == player.play[turn].target);
-        card.setTarget([players[target]]);
-        card.play();
-      }
-
       log.push(card.toJson());
+    }
+    cards = roomCards.concat(selfCards.concat(targetCards));
+    players.map(player => player.startTurn());
+    for (let card of cards) {
+      card.play(this);
     }
     players.map(player => player.endTurn());
     this.log.push(log);

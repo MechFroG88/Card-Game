@@ -2,34 +2,32 @@ import { Card, CardType } from '../Card'
 import { Player } from '../Player';
 import { Room } from '../Room';
 
-export class Pray implements Card {
+export class Armour implements Card {
 
-  cardType = CardType.single;
-  cost = 1;
+  cardType = CardType.self;
+  cost = 2;
 
   owner !: Player;
   target !: Player[];
 
-  setTarget(target : Player[]) : void { 
-    this.target = target;
-  }
+  setTarget(target : Player) : void { }
 
   setOwner(owner : Player) : Card {
-    let card = new Pray();
+    let card = new Armour();
     card.owner = owner;
     return card;
   }
 
-  play(room : Room) : void {
-    if (this.target[0].isNullify()) return;
-    this.target[0].restoreHealth(2);
+  play(room : Room): void {
+    if (this.owner.isNullify()) return;
+    this.owner.increaseRoundDefence(1);
   }
 
   toJson() {
     return {
-      title : "Pray",
+      title : "Armour",
       cost : this.cost,
-      description : "Choose a player and restore 2 health",
+      description : "Reduce your damage taken in current and following turns by 1",
       cardType : this.cardType,
       owner : this.owner?.publicData(),
       target : this.target?.map(target => target.publicData())

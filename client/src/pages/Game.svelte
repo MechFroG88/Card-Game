@@ -59,12 +59,13 @@
       </div>
     </div>
     <div class='players'>
+      <Timer self={self} timer={timer}/>
       <div class='title'>
         <UsersIcon size='24'/> Players
       </div>
       <div class='body'>
         {#each room.players || [] as player}
-          <div class='player {player.ready ? 'ready' : ''}'>
+          <div class='player {player.isDeath ? 'death' : player.ready ? 'ready' : ''}'>
             <div class='role'>
               <Role role={player.role}/>
             </div>
@@ -84,7 +85,6 @@
         {/each}
       </div>
     </div>
-    <Timer self={self} timer={timer}/>
   </div>
     
   <div class='board'>
@@ -99,13 +99,15 @@
     <div class='deck'>
       <Card room={room} self={self} state={room.state} bid={bid} pick={pick}/>
     </div>
-    <div class='action'>
-      {#if self.ready}
-        <button on:click={getReady} class='unready'><XIcon size="18"/>Unready</button>
-      {:else}
-        <button on:click={getReady} class='ready'><CheckIcon size="18"/>Ready</button>
-      {/if}
-    </div>
+    {#if !self.isDeath}
+      <div class='action'>
+        {#if self.ready}
+          <button on:click={getReady} class='unready'><XIcon size="18"/>Unready</button>
+        {:else}
+          <button on:click={getReady} class='ready'><CheckIcon size="18"/>Ready</button>
+        {/if}
+      </div>
+    {/if}
     <div class='title'><Poker width=36/>Cards</div>
     <div class='deck'>
       {#if self.hand.length == 0}
@@ -184,6 +186,10 @@
           background-color: #99F3BD !important;
         }
 
+        .death {
+          background-color: #CDBBA7 !important;
+        }
+
         .player {
           font-weight: 500;
           padding: .5em 1em;
@@ -236,7 +242,6 @@
       align-items: center;
       justify-content: center;
       grid-template-columns: auto auto auto auto;
-      gap: 2em;
       min-width: 500px;
       padding: 1em 1em 1em 1em;
 

@@ -2,16 +2,16 @@ import { Card, CardType } from '../Card'
 import { Player } from '../Player';
 import { Room } from '../Room';
 
-export class Attack implements Card {
+export class Propaganda implements Card {
 
   cardType = CardType.single;
-  cost = 0;
+  cost = 2;
 
   owner !: Player;
   target !: Player[];
 
   setOwner(owner : Player) : Card {
-    let card = new Attack();
+    let card = new Propaganda();
     card.owner = owner;
     return card;
   }
@@ -20,20 +20,16 @@ export class Attack implements Card {
     this.target = target;
   }
 
-  play(room : Room): void {
+  play(room : Room) : void {
     if (this.target[0].isNullify()) return;
-    if (this.target[0].isReflecting()) {
-      this.owner.takeDamage(this.owner.dealDamage(1));
-      return;
-    } 
-    this.target[0].takeDamage(this.owner.dealDamage(1));
+    this.target[0].decreaseRoundDefence(1);
   }
 
   toJson() {
     return {
-      title : "Attack",
+      title : "Propaganda",
       cost : this.cost,
-      description : "Deal 1 damage to a target",
+      description : "Choose a player Increase the damage deal to the player for the current and following turns by 1",
       cardType : this.cardType,
       owner : this.owner?.publicData(),
       target : this.target?.map(target => target.publicData())

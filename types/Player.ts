@@ -9,11 +9,9 @@ export class Player {
   private _ready !: boolean;
   private _position !: number;
   
-  
   private _role !: Role;
   private _hand !: Card [];
   private _play !: Array<{index : number, target : number}>;
-  private active !: Card [];
   private _isDeath !: boolean;
   private health !: number;
   private _coin !: number;
@@ -21,9 +19,12 @@ export class Player {
   private coinIncrement !: number;
   private damage !: number[];
   private defence !: number;
+  private roundDefence !: number;
   private roundDamage !: number;
+  private roundNullify !: boolean;
   private amplify !: number;
-  private immune !: boolean;
+  private nullify !: boolean;
+  private reflect !: boolean;
 
   get id() : string { return this._id }
   set id(_id : string) { this._id = _id }; 
@@ -70,16 +71,18 @@ export class Player {
     this.role = role;
     this.hand = [];
     this.play = [];
-    this.active = [];
     this.isDeath = false;
     this.health = role.health;
     this.coin = 5;
     this.coinIncrement = 2;
     this.damage = [];
     this.defence = 0;
+    this.roundDefence = 0;
     this.roundDamage = 0;
     this.amplify = 0;
-    this.immune = false;
+    this.nullify = false;
+    this.roundNullify = false;
+    this.reflect = false;
   }
 
   basicData() {
@@ -112,7 +115,6 @@ export class Player {
       play : this.play,
       coin : this.coin,
       role : this.role.toString(),
-      active : this.active.map(card => card.toJson()),
     };
   }
 
@@ -126,7 +128,6 @@ export class Player {
       defence : this.defence,
       isDeath : this.isDeath,
       role : visible ? this.role.toString() : "?",
-      active : this.active.map(card => card.toJson()),
     };
   }
 
@@ -144,9 +145,10 @@ export class Player {
   }
 
   endTurn () : void {
-    if (this.immune) return;
     for (let damage of this.damage) {
-      this.health -= Math.max(damage - this.defence, 0);
+      let finalDamage = Math.max(damage - this.defence - this.roundDefence, 0);
+      this.health -= finalDamage;
+      this.roundDamage += finalDamage;
     }
     if (this.health <= 0) {
       this.isDeath = true;
@@ -154,12 +156,13 @@ export class Player {
   }
 
   startTurn () : void {
-    this.immune = false;
+    this.nullify = false;
+    this.reflect = false;
     this.damage = [];
     this.defence = 0;
   }
 
-  endRound () : void {
+  clearHand () : void {
     let hand = [];
     let indices = this.play.map(x => x.index);
     for (let i = 0; i < this.hand.length; i++) {
@@ -170,42 +173,78 @@ export class Player {
     this.play = [];
   }
 
+  startRound () : void {
+    this.amplify = 0;
+    this.roundDefence = 0;
+    this.roundDamage = 0;
+    this.roundNullify = false;
+  }
+
   useCoin (coin : number) : void {
     this.coin -= coin;
   }
 
   takeDamage(damage : number) : void {
-    if (this.isImmune()) return;
     this.damage.push(damage);
-    this.roundDamage += damage;
   }
 
   dealDamage(damage : number) : number {
     return damage + (this.amplify || 0);
   }
 
+  amplifyDamage(damage : number) : void {
+    this.amplify += damage;
+  }
+
   increaseDefence(defence : number) : void {
     this.defence += defence;
   }
 
-  addHealth(health : number) : void {
-    this.health += health;
+  decreaseRoundDefence(defence : number) : void {
+    this.roundDefence -= defence;
   }
 
-  makeImmune() : void {
-    this.immune = true;
+  increaseRoundDefence(defence : number) : void {
+    this.roundDefence += defence;
   }
 
-  isImmune() : boolean {
-    return this.immune;
+  restoreHealth(health : number) : void {
+    this.health = Math.min(this.health + health, this.role.health);
   }
 
-  addActive(card : Card) : void {
-    this.active.push(card);
+  makeNullify() : void {
+    this.nullify = true;
+  }
+
+  makeRoundNullify() : void {
+    this.roundNullify = true;
+  }
+
+  getRoundDamage() : number {
+    return this.roundDamage;
+  }
+
+  isNullify() : boolean {
+    return this.nullify || this.roundNullify;
+  }
+
+  isReflecting() : boolean {
+    return this.reflect;
+  }
+
+  makeReflect() : void {
+    this.reflect = true;
   }
 
   addHand(card : Card) : void {
     this.hand.push(card.setOwner(this));
+  }
+
+  stealHand() : Card {
+    let index = Math.floor(Math.random()*this.hand.length);
+    let card = this.hand[index];
+    this.hand.splice(index, 1);
+    return card;
   }
   
 }

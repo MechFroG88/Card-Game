@@ -144,11 +144,13 @@
       <div class='icon'><CardIcon title={card.title}/></div>
       <div class='title'>{card.title}</div>
       <div class='description'>{card.description}</div>
-      <div class='footer-shop'>
-        <button class='minus' on:click={() => minus(index)}><MinusIcon size='18'/></button>
-        <span class='middle'>{self.bids[index]}</span>
-        <button class='plus' on:click={() => plus(index)}><PlusIcon size='18'/></button>
-      </div>
+      {#if !self.isDeath}
+        <div class='footer-shop'>
+          <button class='minus' on:click={() => minus(index)}><MinusIcon size='18'/></button>
+          <span class='middle'>{self.bids[index]}</span>
+          <button class='plus' on:click={() => plus(index)}><PlusIcon size='18'/></button>
+        </div>
+      {/if}
     </div>
   {/each}
 {:else if state == State.shopResult}
@@ -286,13 +288,13 @@
     .players {
       display: grid;
       grid-template-columns: auto auto auto auto;
-      gap: 3em;
       align-items: center;
       justify-content: center;
       max-height: 400px;
       .player {
         font-weight: 500;
         padding: .5em 1em;
+        margin: 1em;
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
         border-radius: 12px;
         display: grid;
@@ -332,8 +334,6 @@
     .deck {
       display: grid;
       grid-template-columns: auto auto auto auto;
-      row-gap: 3em;
-      column-gap: 3em;
       padding: 1em;
     }
     
@@ -355,9 +355,8 @@
     align-items: center;
     row-gap: 0px;
     padding: 0;
-    margin: 0;
+    margin: 1em;
     border-radius: 12px;
-    width: 200px;
     min-height: 275px;
     .icon {
       margin: auto;
@@ -373,7 +372,7 @@
     }
     .description{
       text-align: center;
-      padding: .8em;
+      padding: 10px 20px 10px 20px;
       width: 160px;
     }
     .footer-target {

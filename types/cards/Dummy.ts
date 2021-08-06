@@ -1,5 +1,6 @@
 import { Card, CardType } from '../Card'
 import { Player } from '../Player';
+import { Room } from '../Room';
 
 export class Dummy implements Card {
 
@@ -17,9 +18,9 @@ export class Dummy implements Card {
     return card;
   }
 
-  play(): string {
-    this.owner.makeImmune();
-    return `${this.owner.name} uses Immune`;
+  play(room : Room): void {
+    if (this.owner.isNullify()) return;
+    this.owner.makeNullify();
   }
 
   toJson() {
