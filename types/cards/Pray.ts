@@ -3,13 +3,15 @@ import { Player } from '../Player';
 
 export class Pray implements Card {
 
-  cardType = CardType.self;
+  cardType = CardType.single;
   cost = 1;
 
   owner !: Player;
   target !: Player[];
 
-  setTarget(target : Player) : void { }
+  setTarget(target : Player[]) : void { 
+    this.target = target;
+  }
 
   setOwner(owner : Player) : Card {
     let card = new Pray();
@@ -18,7 +20,7 @@ export class Pray implements Card {
   }
 
   play(): string {
-    this.owner.addHealth(2);
+    this.target[0].addHealth(2);
     return `${this.owner.name} uses Pray`;
   }
 
