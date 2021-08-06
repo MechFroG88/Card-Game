@@ -189,7 +189,7 @@ export class Player {
   }
 
   dealDamage(damage : number) : number {
-    return damage + (this.amplify || 0);
+    return damage + this.amplify;
   }
 
   amplifyDamage(damage : number) : void {

@@ -21,6 +21,7 @@ export class Steal implements Card {
   }
 
   play(room : Room) : void {
+    if (this.owner.isNullify()) return;
     if (this.target[0].isNullify()) return;
     this.owner.addHand(this.target[0].stealHand());
   }

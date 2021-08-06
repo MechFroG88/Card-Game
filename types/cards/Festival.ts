@@ -19,6 +19,7 @@ export class Festival implements Card {
   setTarget(target : Player[]) : void { }
 
   play(room : Room) : void {
+    if (this.owner.isNullify()) return;
     let players = Object.values(room.players);
     for (let player of players) {
       if (player.isDeath) continue;

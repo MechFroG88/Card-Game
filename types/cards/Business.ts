@@ -20,14 +20,14 @@ export class Business implements Card {
 
   play(room : Room): void {
     if (this.owner.isNullify()) return;
-    this.owner.coin += 10;
+    this.owner.coin += 5;
   }
 
   toJson() {
     return {
       title : "Business",
       cost : this.cost,
-      description : "Earn 10 coins",
+      description : "Earn 5 coins",
       cardType : this.cardType,
       owner : this.owner?.publicData(),
       target : this.target?.map(target => target.publicData())

@@ -21,15 +21,16 @@ export class Torture implements Card {
   }
 
   play(room : Room) : void {
+    if (this.owner.isNullify()) return;
     if (this.target[0].isNullify()) return;
-    this.target[0].takeDamage(this.owner.dealDamage(2));
+    this.target[0].takeDamage(this.owner.dealDamage(3));
   }
 
   toJson() {
     return {
       title : "Torture",
       cost : this.cost,
-      description : "Choose a player and deal 2 damage",
+      description : "Choose a player and deal 3 damage",
       cardType : this.cardType,
       owner : this.owner?.publicData(),
       target : this.target?.map(target => target.publicData())

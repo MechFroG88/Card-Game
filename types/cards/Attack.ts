@@ -21,6 +21,7 @@ export class Attack implements Card {
   }
 
   play(room : Room): void {
+    if (this.owner.isNullify()) return;
     if (this.target[0].isNullify()) return;
     if (this.target[0].isReflecting()) {
       this.owner.takeDamage(this.owner.dealDamage(1));

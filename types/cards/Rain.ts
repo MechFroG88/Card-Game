@@ -21,10 +21,11 @@ export class Rain implements Card {
   }
 
   play(room : Room) : void {
+    if (this.owner.isNullify()) return;
     this.target.forEach(
       target => {
         if (target.isNullify()) return;
-        target.restoreHealth(2);
+        target.restoreHealth(1);
       }
     );
   }
@@ -33,7 +34,7 @@ export class Rain implements Card {
     return {
       title : "Rain",
       cost : this.cost,
-      description : "Restore 2 health to all players",
+      description : "Restore 1 health to all players",
       cardType : this.cardType,
       owner : this.owner?.publicData(),
       target : this.target?.map(target => target.publicData())

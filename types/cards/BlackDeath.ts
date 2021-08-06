@@ -21,6 +21,7 @@ export class BlackDeath implements Card {
   }
 
   play(room : Room): void {
+    if (this.owner.isNullify()) return;
     let owner = <Player> this.owner;
     this.target.forEach(
       target => {

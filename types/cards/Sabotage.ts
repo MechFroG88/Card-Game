@@ -22,6 +22,7 @@ export class Sabotage implements Card {
   }
 
   play(room : Room) : void {
+    if (this.owner.isNullify()) return;
     if (this.target[0].isNullify()) return;
     let turn = room.getCurrentTurn() + 1;
     while (turn < 3) {
