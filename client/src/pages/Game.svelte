@@ -176,7 +176,7 @@
         max-height: 400px;
 
         .ready {
-          border-color:#16C79A;
+          background-color: #99F3BD !important;
         }
 
         .player {
