@@ -49,8 +49,11 @@
           {#if self.isDeath}
             <Fa icon={faSkull}/>
           {:else}
-            <div class='heart'><Fa icon={faHeart}/></div> {self.health}
+            <div class='heart'><Fa icon={faHeart}/></div> {self.health} 
           {/if}
+        </div>
+        <div class='stats'>
+          <div class='handcount'><Poker width=24/> {self.handcount}</div>
         </div>
         <div class='stats'>
           <div class='coin'><Fa icon={faCoins}/></div>
@@ -77,7 +80,8 @@
                 {#if player.isDeath}
                   <Fa icon={faSkull}/>
                 {:else}
-                  <div class='heart'><Fa icon={faHeart}/></div> {player.health}
+                  <div class='heart'><Fa icon={faHeart}/></div>{player.health}
+                  <div class='handcount'><Poker width=20/></div>{self.handcount}
                 {/if}
               </div>
             </div>
@@ -129,6 +133,16 @@
     color: #F0C929;
   }
 
+  .handcount {
+    fill: #7C83FD;
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 8px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
   .content {
     display: grid;
     grid-template-columns: 300px auto;
@@ -155,7 +169,7 @@
       }
       .body {
         display: grid;
-        grid-template-columns: auto auto;
+        grid-template-columns: auto auto auto;
         column-gap: 18px;
         align-items: center;
         justify-content: center;
@@ -211,13 +225,13 @@
               font-size: 18px;
             }
             .stats {
-              display: flex;
+              display: grid;
+              column-gap: 8px;
+              grid-auto-flow: column;
+              justify-content: center;
               align-items: center;
+              text-align: center;
               font-size: 18px;
-              .heart {
-                width : 1em;
-                margin-right: .4em;
-              }
             }
           }
         }

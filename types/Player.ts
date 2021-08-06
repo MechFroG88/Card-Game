@@ -112,6 +112,7 @@ export class Player {
       isDeath : this.isDeath,
       bids : this.bids,
       hand : this.hand.map(card => card.toJson()),
+      handcount : this.hand.length,
       play : this.play,
       coin : this.coin,
       role : this.role.toString(),
@@ -127,6 +128,7 @@ export class Player {
       health : this.health,
       defence : this.defence,
       isDeath : this.isDeath,
+      handcount : this.hand.length,
       role : visible ? this.role.toString() : "?",
     };
   }
