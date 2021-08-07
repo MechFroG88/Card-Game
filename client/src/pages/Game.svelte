@@ -40,29 +40,27 @@
 
 <div class='content'>
   <div class='sidebar'>
+    <Timer self={self} timer={timer}/>
     <div class='self'>
-      <div class='title'>
-        <Role role={self.role}/>{self.name}
+      <div class='role'>
+        <Role role={self.role}/>
       </div>
-      <div class='body'>
+      <div class='data'>
+        <div class='name'>
+          {self.name}
+        </div>
         <div class='stats'>
           {#if self.isDeath}
             <Fa icon={faSkull}/>
           {:else}
-            <div class='heart'><Fa icon={faHeart}/></div> {self.health} 
+            <div class='heart'><Fa icon={faHeart}/></div>{self.health}
+            <div class='handcount'><Poker width=20/></div>{self.handcount}
+            <div class='coin'><Fa icon={faCoins}/></div>{self.coin}
           {/if}
-        </div>
-        <div class='stats'>
-          <div class='handcount'><Poker width=24/> {self.handcount}</div>
-        </div>
-        <div class='stats'>
-          <div class='coin'><Fa icon={faCoins}/></div>
-          {self.coin}
         </div>
       </div>
     </div>
     <div class='players'>
-      <Timer self={self} timer={timer}/>
       <div class='title'>
         <UsersIcon size='24'/> Players
       </div>
@@ -145,7 +143,7 @@
 
   .content {
     display: grid;
-    grid-template-columns: 300px auto;
+    grid-template-columns: 350px auto;
     padding: 1em;
     column-gap: 1em;
   }
@@ -153,32 +151,38 @@
   .sidebar {
     padding: 0 1em 1em 0;
     .self {
-      border-bottom-style: solid;
-      border-bottom-color: #aaa;
-      border-bottom-width: 2px;
-      padding: 1em;
-      margin: 1em;
-      .title {
-        display: grid;
-        grid-auto-flow: column;
-        column-gap: 8px;
-        justify-content: center;
-        margin: .5em;
+      font-weight: 500;
+      padding: .5em 1em;
+      border-radius: 12px;
+      display: grid;
+      grid-template-columns: 60px 160px;
+      width: fit-content;
+      align-items: center;
+      justify-content: center;
+      grid-auto-flow: column;
+      margin: auto;
+      column-gap: 18px;
+      margin-top: 1em;
+      color: #424874;
+      background-color: white;
+      .role {
         text-align: center;
-        font-size: 32px;
+        font-size: 60px;
       }
-      .body {
-        display: grid;
-        grid-template-columns: auto auto auto;
-        column-gap: 18px;
-        align-items: center;
-        justify-content: center;
-        .stats {
+      .data {
+        .name {
           font-size: 24px;
+          text-align: center;
+        }
+        .stats {
+          margin-top: 4px;
           display: grid;
-          align-items: center;
+          column-gap: 8px;
           grid-auto-flow: column;
-          column-gap: 6px;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          font-size: 24px;
         }
       }
     }
