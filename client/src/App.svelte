@@ -30,9 +30,25 @@
         <Home/>
       </Route>
     </div>
+    <div class='footer'>
+      2021 © <a href="https://github.com/MechFroG88">mechfrog88</a> | Icons from <a href="https://www.flaticon.com/" title="Flaticon">flaticon.com</a>
+    </div>
   </Router>
 {/if}
 
+
+<style lang='scss'>
+  .footer{
+    min-height: 40px;
+    margin-top:auto;
+    width: 100%;
+    text-align: center;
+    color: #aaa;
+    a {
+      color: #aaa;
+    }
+  }
+</style>
 
 <!-- 
 <Router>
