@@ -204,24 +204,6 @@
     box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
   }
 
-  .heart {
-    color: #FF4848;
-  }
-
-  .coin {
-    color: #F0C929;
-  }
-
-  .handcount {
-    fill: #7C83FD;
-    display: grid;
-    grid-auto-flow: column;
-    column-gap: 8px;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-
   .rule {
     display: grid;
     gap: 3em;
@@ -238,9 +220,6 @@
       gap: 8px;
       font-size: 36px;
       text-align: center;
-    }
-    .subtitle {
-      font-size: 24px;
     }
     .content {
       font-size: 24px;
@@ -448,29 +427,6 @@
       margin: auto;
       width: 180px;
       word-wrap : break-word;
-    }
-    .footer-target {
-      text-align: center;
-      height: 40px;
-      fill: #DA0037;
-      color: #DA0037;
-    }
-    .footer-result {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 40px;
-      .win {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        fill: #16C79A;
-        color: #16C79A;
-      }
-      .lose {
-        fill: #DA0037;
-        color: #DA0037;
-      }
     }
     .footer-shop {
       display: grid;
