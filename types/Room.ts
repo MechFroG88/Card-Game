@@ -11,6 +11,7 @@ export class Room {
   private roomMaster !: Player;
   private state : State;
   private _countdown : any;
+  private lastActive : number;
 
   set countdown ( _countdown : any ) { this._countdown = _countdown; }
   get countdown () : any { return this._countdown; }
@@ -90,6 +91,16 @@ export class Room {
   constructor (id : string) {
     this.id = id;
     this.state = State.wait;
+    this.lastActive = Date.now();
+  }
+
+  isActive() : boolean {
+    let diff = Date.now() - this.lastActive;
+    let hours = Math.floor((diff) / (1000*60*60))
+    if (hours >= 2) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -299,6 +310,7 @@ export class Room {
    * @returns The general json data of the room
    */
   toJson () {
+    this.lastActive = Date.now();
     let players = Object.values(this.players);
     return {
       id : this.id,

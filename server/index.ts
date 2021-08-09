@@ -20,6 +20,14 @@ if (process.env.NODE_ENV === 'development') {
 
 var rooms : { [key : string] : Room } = {}; 
 
+setTimeout(() => {
+  let room = Object.keys(rooms);
+  for (let key of room) {
+    if (rooms[key].isActive()) continue;
+    delete rooms[key];
+  }
+}, 60*60*1000);
+
 const socket = require('./socket');
 socket(server, rooms);
 app.use(express.json());
